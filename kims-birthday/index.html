@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Happy Birthday Kim</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --deep: #1a1a2e;
+    --accent: #f5e6ca;
+    --rose: #d4a0a0;
+    --white: #fefefe;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+    background: var(--deep);
+    color: var(--white);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ── Screens ── */
+  .screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+  }
+  .screen.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Envelope Screen ── */
+  #envelope-screen {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+  }
+
+  .envelope-wrap {
+    position: relative;
+    width: 260px;
+    height: 180px;
+    cursor: pointer;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .envelope {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, var(--gold), var(--gold-light));
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(201, 168, 76, 0.3);
+  }
+
+  .envelope::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(145deg, #b8943f, var(--gold));
+    clip-path: polygon(0 0, 50% 70%, 100% 0);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .envelope-heart {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    z-index: 2;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .tap-hint {
+    margin-top: 2.5rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* ── Greeting Screen ── */
+  #greeting-screen {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2a1a3e 50%, #1a1a2e 100%);
+  }
+
+  .greeting-subtitle {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.3s;
+  }
+
+  .greeting-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+
+  .greeting-message {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--rose);
+    max-width: 320px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.9s;
+  }
+
+  .greeting-continue {
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1.4s;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Choice Screen ── */
+  #choice-screen {
+    background: linear-gradient(135deg, #1a1a2e 0%, #1e2a3e 50%, #1a1a2e 100%);
+    justify-content: flex-start;
+    padding-top: 3rem;
+  }
+
+  .choice-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .choice-subtitle {
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: var(--rose);
+    margin-bottom: 2rem;
+    letter-spacing: 0.1em;
+  }
+
+  .paths {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .path-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 16px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .path-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 16px;
+  }
+
+  .path-card:active {
+    transform: scale(0.98);
+  }
+  .path-card:active::before {
+    opacity: 1;
+  }
+
+  .path-icon {
+    font-size: 2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .path-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--gold-light);
+    margin-bottom: 0.3rem;
+  }
+
+  .path-desc {
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+  }
+
+  .path-arrow {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 1.2rem;
+    opacity: 0.5;
+  }
+
+  /* ── Reveal Screen ── */
+  #reveal-screen {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2a1a3e 50%, #1a1a2e 100%);
+  }
+
+  .reveal-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .reveal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--gold-light);
+    margin-bottom: 0.8rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+
+  .reveal-body {
+    font-weight: 300;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.75);
+    max-width: 320px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.6s;
+  }
+
+  .reveal-back {
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.9s;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 100px;
+    padding: 0.8rem 2.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+  }
+
+  .btn:active {
+    background: rgba(201,168,76,0.15);
+    border-color: var(--gold);
+  }
+
+  /* ── Sparkles ── */
+  .sparkle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: var(--gold-light);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    animation: sparkle 1.5s ease forwards;
+  }
+
+  @keyframes sparkle {
+    0% { opacity: 0; transform: scale(0) translateY(0); }
+    30% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0) translateY(-60px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Screen 1: Envelope -->
+<div id="envelope-screen" class="screen active">
+  <div class="envelope-wrap" onclick="openEnvelope()">
+    <div class="envelope">
+      <span class="envelope-heart">&#10084;&#65039;</span>
+    </div>
+  </div>
+  <p class="tap-hint">Tap to open</p>
+</div>
+
+<!-- Screen 2: Greeting -->
+<div id="greeting-screen" class="screen">
+  <p class="greeting-subtitle">Happy Birthday</p>
+  <h1 class="greeting-name">Kim</h1>
+  <p class="greeting-message">
+    With Japan on the horizon this autumn, I thought we should
+    start the adventure a little early &mdash; with a night at
+    one of Perth&rsquo;s finest Japanese restaurants.
+    <br><br>
+    But here&rsquo;s the twist &mdash; you get to choose how we do it.
+  </p>
+  <div class="greeting-continue">
+    <button class="btn" onclick="showScreen('choice-screen')">See Your Gift</button>
+  </div>
+</div>
+
+<!-- Screen 3: Choose a Path -->
+<div id="choice-screen" class="screen">
+  <h2 class="choice-title">Your Night at Papi Katsu</h2>
+  <p class="choice-subtitle">How would you like to enjoy it?</p>
+  <div class="paths" id="paths-container"></div>
+  <a href="menu.html" class="btn" style="margin-top: 1.5rem; text-decoration: none;">Browse the Menu</a>
+  <button class="btn" style="margin-top: 0.8rem; opacity: 0.5; font-size: 0.7rem;" onclick="showScreen('envelope-screen')">Start Again</button>
+</div>
+
+<!-- Screen 4: Reveal -->
+<div id="reveal-screen" class="screen">
+  <div class="reveal-icon" id="reveal-icon"></div>
+  <h2 class="reveal-title" id="reveal-title"></h2>
+  <p class="reveal-body" id="reveal-body"></p>
+  <div class="reveal-back">
+    <button class="btn" onclick="showScreen('choice-screen')">Choose Again</button>
+  </div>
+</div>
+
+<script>
+  // ── Gift paths config ──
+  // Edit these to set up Kim's real options
+  const paths = [
+    {
+      icon: '🌙',
+      name: 'Just Us',
+      desc: 'A romantic night for two with an overnight stay in Perth',
+      revealIcon: '🥂',
+      revealTitle: 'A Night for Two',
+      revealBody: 'Dinner at Papi Katsu on St Georges Terrace \u2014 contemporary Japanese with A5 wagyu, sashimi, and cocktails \u2014 followed by a night in Perth, just the two of us. A taste of Japan before the real thing this September.'
+    },
+    {
+      icon: '🚢',
+      name: 'With Shirley & Charlie',
+      desc: 'Bring our cruise companions along for the night',
+      revealIcon: '🍶',
+      revealTitle: 'The Four of Us',
+      revealBody: 'We invite Shirley and Charlie to join us at Papi Katsu and make it a proper pre-cruise celebration. Dinner\u2019s on us \u2014 our shout \u2014 plus a night in Perth. The Japan adventure starts with the people we\u2019re sharing it with.'
+    },
+    {
+      icon: '🎉',
+      name: 'Gather the Gang',
+      desc: 'Invite a few more friends to share the evening',
+      revealIcon: '🏮',
+      revealTitle: 'A Special Evening with Friends',
+      revealBody: 'We pick a few favourite people and make a night of it at Papi Katsu. Beautiful Japanese food, good conversation, and a lovely way to celebrate your birthday with the people who matter most.'
+    }
+  ];
+
+  // ── Build path cards ──
+  const container = document.getElementById('paths-container');
+  paths.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'path-card';
+    card.innerHTML = `
+      <div class="path-icon">${p.icon}</div>
+      <div class="path-name">${p.name}</div>
+      <div class="path-desc">${p.desc}</div>
+      <span class="path-arrow">&#8250;</span>
+    `;
+    card.addEventListener('click', () => revealPath(i));
+    container.appendChild(card);
+  });
+
+  // ── Navigation ──
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function openEnvelope() {
+    burstSparkles();
+    setTimeout(() => showScreen('greeting-screen'), 400);
+  }
+
+  function revealPath(index) {
+    const p = paths[index];
+    document.getElementById('reveal-icon').textContent = p.revealIcon;
+    document.getElementById('reveal-title').textContent = p.revealTitle;
+    document.getElementById('reveal-body').textContent = p.revealBody;
+
+    // Reset animations
+    const reveal = document.getElementById('reveal-screen');
+    reveal.classList.remove('active');
+    void reveal.offsetWidth;
+
+    showScreen('reveal-screen');
+    burstSparkles();
+  }
+
+  // ── Handle deep link from menu ──
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('screen') === 'choice') {
+    showScreen('choice-screen');
+  }
+
+  // ── Sparkle effect ──
+  function burstSparkles() {
+    for (let i = 0; i < 20; i++) {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.top = Math.random() * 100 + 'vh';
+      s.style.animationDelay = Math.random() * 0.5 + 's';
+      s.style.width = s.style.height = (Math.random() * 4 + 2) + 'px';
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 2000);
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Papi Katsu Menu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  html.has-pinned-header { scroll-padding-top: 11rem; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body.has-pinned-header {
+    padding-top: 11rem;
+  }
+
+  /* ── Sticky Header ── */
+  .sticky-header {
+    position: relative;
+    z-index: 50;
+    background: #fff;
+  }
+
+  .sticky-header.pinned {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+  }
+
+  .header-back {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: #e91e8c;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .header-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .header-logo-sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #e91e8c;
+  }
+
+  .header-spacer {
+    width: 80px;
+  }
+
+  /* ── Tabs in header ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 0 1rem 0.5rem;
+  }
+
+  .tab {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    padding: 0.4rem 2rem;
+    cursor: pointer;
+    border: 2px solid #e91e8c;
+    background: transparent;
+    color: #1a1a1a;
+    transition: all 0.2s ease;
+    -webkit-appearance: none;
+  }
+
+  .tab:first-child { border-radius: 8px 0 0 8px; }
+  .tab:last-child { border-radius: 0 8px 8px 0; border-left: none; }
+  .tab.active { background: #e91e8c; color: #fff; }
+
+  /* ── Jump Nav ── */
+  .jump-nav {
+    display: none;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.5rem 1rem;
+    background: #fafafa;
+    border-top: 1px solid #eee;
+  }
+
+  .jump-nav.visible {
+    display: flex;
+  }
+
+  .jump-pill {
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    padding: 0.28rem 0.65rem;
+    border-radius: 100px;
+    background: #f0f0f0;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .jump-pill:active, .jump-pill.active {
+    background: #e91e8c;
+    color: #fff;
+  }
+
+  /* ── Content ── */
+  .menu-content {
+    padding: 1rem 1rem 2rem;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .jp-hint {
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: #e91e8c;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Sections ── */
+  .section {
+    margin-bottom: 1.5rem;
+    break-inside: avoid;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+    color: #1a1a1a;
+    border-bottom: 2px solid #e91e8c;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .item { margin-bottom: 0.5rem; }
+
+  .item-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  .item-desc {
+    font-weight: 300;
+    font-size: 0.75rem;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  .dietary {
+    font-size: 0.6rem;
+    color: #e91e8c;
+    font-weight: 400;
+  }
+
+  /* ── Multi-column grid ── */
+  .menu-grid {
+    column-count: 1;
+    column-gap: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .menu-grid { column-count: 2; }
+  }
+
+  @media (min-width: 900px) {
+    .menu-grid { column-count: 3; }
+  }
+
+  /* ── Banquet expandable items ── */
+  .banquet-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .banquet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.3rem 0;
+  }
+
+  .banquet-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  .banquet-desc {
+    font-weight: 300;
+    font-size: 0.75rem;
+    color: #666;
+  }
+
+  .banquet-toggle {
+    font-size: 1.1rem;
+    color: #e91e8c;
+    line-height: 1;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+  }
+
+  .banquet-item.open .banquet-toggle {
+    transform: rotate(45deg);
+  }
+
+  .banquet-courses {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .banquet-item.open .banquet-courses {
+    max-height: 800px;
+  }
+
+  .banquet-courses-inner {
+    padding: 0.5rem 0 0.3rem 0.8rem;
+    border-left: 2px solid #e91e8c;
+    margin-top: 0.3rem;
+  }
+
+  .banquet-course {
+    margin-bottom: 0.4rem;
+  }
+
+  .banquet-course-name {
+    font-weight: 600;
+    font-size: 0.82rem;
+  }
+
+  .banquet-course-desc {
+    font-weight: 300;
+    font-size: 0.72rem;
+    color: #666;
+    line-height: 1.3;
+  }
+
+  /* ── Wagyu Section ── */
+  .wagyu-section {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    color: #fff;
+    border-radius: 14px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    break-inside: avoid;
+  }
+
+  .wagyu-section .section-title {
+    color: #e91e8c;
+    border-bottom-color: #e91e8c;
+  }
+
+  .wagyu-section .item-name { color: #fff; }
+  .wagyu-section .item-desc { color: #aaa; }
+
+  .omakase {
+    border: 1px solid rgba(233,30,140,0.4);
+    border-radius: 10px;
+    padding: 0.8rem;
+    text-align: center;
+    margin-top: 0.8rem;
+  }
+
+  .omakase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: #e91e8c;
+    margin-bottom: 0.2rem;
+  }
+
+  .omakase-desc {
+    font-weight: 300;
+    font-size: 0.72rem;
+    color: #888;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 1rem 1rem;
+    border-top: 1px solid #eee;
+  }
+
+  .footer p {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: #999;
+    line-height: 1.6;
+  }
+
+  /* ── Japanese term tooltips ── */
+  .jp-term {
+    border-bottom: 1.5px dotted #e91e8c;
+    cursor: pointer;
+  }
+
+  .jp-tooltip {
+    position: fixed;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%) translateY(10px);
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    width: calc(100% - 2rem);
+    max-width: 360px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .jp-tooltip.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .jp-tooltip-word {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: #e91e8c;
+    letter-spacing: 0.05em;
+  }
+
+  .jp-tooltip-japanese {
+    font-size: 0.82rem;
+    color: #aaa;
+    margin-bottom: 0.3rem;
+  }
+
+  .jp-tooltip-meaning {
+    font-weight: 300;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: #ddd;
+  }
+
+  .jp-tooltip-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.7rem;
+    font-size: 1.2rem;
+    color: #666;
+    cursor: pointer;
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Sticky Header ── -->
+<div class="sticky-header">
+  <div class="header-top">
+    <a href="index.html?screen=choice" class="header-back">&larr; Back to gift</a>
+    <div style="text-align:center;">
+      <div class="header-logo">PAPI KATSU</div>
+      <div class="header-logo-sub">Contemporary Japanese</div>
+    </div>
+    <div class="header-spacer"></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('food')">Food</button>
+    <button class="tab" onclick="switchTab('drinks')">Drinks</button>
+  </div>
+  <div class="jump-nav" id="jump-nav"></div>
+</div>
+
+<!-- ── Content ── -->
+<div class="menu-content">
+
+<p class="jp-hint">Tap the <span style="border-bottom:1.5px dotted #e91e8c;">dotted words</span> to learn about Japanese food terms</p>
+
+<!-- ════ FOOD TAB ════ -->
+<div id="tab-food" class="tab-content active">
+
+<div class="menu-grid">
+
+  <div class="section" id="sec-banquets" data-nav="Banquets" data-tab="food">
+    <div class="section-title">Banquets</div>
+
+    <div class="banquet-item" id="bq1" onclick="toggleBanquet('bq1')">
+      <div class="banquet-header">
+        <div>
+          <div class="banquet-name">Feed Me Papi</div>
+          <div class="banquet-desc">An introduction to Papi&rsquo;s favourites &mdash; tap to see the courses</div>
+        </div>
+        <div class="banquet-toggle">+</div>
+      </div>
+      <div class="banquet-courses">
+        <div class="banquet-courses-inner">
+          <div class="banquet-course"><div class="banquet-course-name">Miso Soup</div><div class="banquet-course-desc">Silken tofu, wakame</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Edamame</div><div class="banquet-course-desc">Spicy papi seasoning</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Sashimi Plate</div><div class="banquet-course-desc">Selection of daily seafood</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Tuna Crispy Rice</div><div class="banquet-course-desc">Spicy tuna, crispy sushi rice</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Salmon (Nori&ndash;Sesame)</div><div class="banquet-course-desc">Nori&ndash;sesame emulsion, avocado, arame pearls</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Sweet Potato Temaki</div><div class="banquet-course-desc">Green garlic oil, miso hot sauce</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Wagyu Beef Gyoza</div><div class="banquet-course-desc">Green garlic soy</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Steamed WA Snapper</div><div class="banquet-course-desc">Soy&ndash;mirin broth, crispy radish, seasonal greens</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Rice</div><div class="banquet-course-desc">Steamed rice, furikake</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Carrot Kinpira</div><div class="banquet-course-desc">Red pepper, black sesame</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Chef Selection Dessert</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banquet-item" id="bq2" onclick="toggleBanquet('bq2')">
+      <div class="banquet-header">
+        <div>
+          <div class="banquet-name">Sugar Papi</div>
+          <div class="banquet-desc">The indulgence you didn&rsquo;t know you needed &mdash; tap to see the courses</div>
+        </div>
+        <div class="banquet-toggle">+</div>
+      </div>
+      <div class="banquet-courses">
+        <div class="banquet-courses-inner">
+          <div class="banquet-course"><div class="banquet-course-name">Edamame</div><div class="banquet-course-desc">Spicy papi seasoning</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Sashimi Plate</div><div class="banquet-course-desc">Selection of daily seafood</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Beef Tataki (A5 Wagyu)</div><div class="banquet-course-desc">Pepper jam, black-bean shoyu</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Miso Salmon Maki (4)</div><div class="banquet-course-desc">Avocado, pickled ginger</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Chicken Karaage</div><div class="banquet-course-desc">Lemon, mayo, sancho pepper</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Sweet Potato Temaki</div><div class="banquet-course-desc">Green garlic oil, miso hot sauce</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Honey Ginger Beef Short Rib</div><div class="banquet-course-desc">Red miso, rayu glaze</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Duck Breast</div><div class="banquet-course-desc">Black garlic teriyaki, sugar snap peas, pickled leek</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Carrot Kinpira</div><div class="banquet-course-desc">Red miso, black sesame</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Japanese Potato Salad</div><div class="banquet-course-desc">Yuzu aioli, green onion, puffed rice</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Rice</div><div class="banquet-course-desc">Steamed rice, furikake</div></div>
+          <div class="banquet-course"><div class="banquet-course-name">Chef Selection Dessert</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-bites" data-nav="Bites" data-tab="food">
+    <div class="section-title">Bites</div>
+    <div class="item"><div class="item-name">Oysters</div><div class="item-desc">Chef's preparation</div></div>
+    <div class="item"><div class="item-name">Edamame <span class="dietary">v ve gf</span></div></div>
+    <div class="item"><div class="item-name">Miso Soup <span class="dietary">gf</span></div><div class="item-desc">Silken tofu, wakame</div></div>
+    <div class="item"><div class="item-name">Wagyu Beef Gyoza</div></div>
+    <div class="item"><div class="item-name">Fried Curried Potato Gyoza <span class="dietary">v ve</span></div><div class="item-desc">Curry &amp; potato, tempura crumbs, citrus aioli</div></div>
+    <div class="item"><div class="item-name">Sweet Corn Kakiage <span class="dietary">v ve</span></div></div>
+    <div class="item"><div class="item-name">Prawn Katsu Sando</div><div class="item-desc">Iceberg, Japanese tartare</div></div>
+  </div>
+
+  <div class="section" id="sec-karaage" data-nav="Karaage" data-tab="food">
+    <div class="section-title">Karaage</div>
+    <div class="item"><div class="item-name">Chicken</div><div class="item-desc">Chives, sriracha pepper, mayo</div></div>
+    <div class="item"><div class="item-name">Cauliflower <span class="dietary">v ve</span></div><div class="item-desc">Sriracha, papi criste</div></div>
+  </div>
+
+  <div class="section" id="sec-skewers" data-nav="Skewers" data-tab="food">
+    <div class="section-title">Skewers</div>
+    <div class="item"><div class="item-name">+9 Stone Axe Wagyu</div></div>
+    <div class="item"><div class="item-name">Chicken &amp; Charred Leek Tsukune</div></div>
+    <div class="item"><div class="item-name">Grilled Octopus</div><div class="item-desc">Sticky soy, shishito crema, finger lime</div></div>
+    <div class="item"><div class="item-name">Crispy Sweet Potato <span class="dietary">v ve gf</span></div></div>
+  </div>
+
+  <div class="section" id="sec-temaki" data-nav="Temaki" data-tab="food">
+    <div class="section-title">Temaki (Sushi Taco)</div>
+    <div class="item"><div class="item-name">Spicy Salmon</div><div class="item-desc">Ebara, citrus, cream fraiche</div></div>
+  </div>
+
+  <div class="section" id="sec-sashimi" data-nav="Sashimi" data-tab="food">
+    <div class="section-title">Sashimi / Nigiri</div>
+    <div class="item"><div class="item-name">Papi Plate</div></div>
+    <div class="item"><div class="item-name">Papi Nigiri Plate</div></div>
+  </div>
+
+  <div class="section" id="sec-maki" data-nav="Maki" data-tab="food">
+    <div class="section-title">Maki (Sushi Rolls)</div>
+    <div class="item"><div class="item-name">Teriyaki Chicken</div></div>
+    <div class="item"><div class="item-name">Miso Salmon</div></div>
+    <div class="item"><div class="item-name">Uramaki <span class="dietary">v</span></div><div class="item-desc">Avocado, cucumber, portobello</div></div>
+    <div class="item"><div class="item-name">Golden Sushi</div></div>
+  </div>
+
+  <div class="section" id="sec-raw" data-nav="Raw" data-tab="food">
+    <div class="section-title">Raw</div>
+    <div class="item"><div class="item-name">Chopped A5 Wagyu</div><div class="item-desc">Crispy sushi rice, avocado, jalapeno, ponzu</div></div>
+    <div class="item"><div class="item-name">Tuna Tartare</div><div class="item-desc">Avocado, mushroom, yuzu dressing</div></div>
+    <div class="item"><div class="item-name">A5 Wagyu Tataki <span class="dietary">gf</span></div><div class="item-desc">Mori's Japanese mushroom, avocado, truffle ponzu</div></div>
+    <div class="item"><div class="item-name">Salmon</div></div>
+  </div>
+
+  <div class="section" id="sec-salad" data-nav="Salad" data-tab="food">
+    <div class="section-title">Salad / Veg</div>
+    <div class="item"><div class="item-name">Tempura Broccoli <span class="dietary">v</span></div></div>
+    <div class="item"><div class="item-name">Japanese Potato Salad</div></div>
+    <div class="item"><div class="item-name">Carrot Kinpira</div></div>
+    <div class="item"><div class="item-name">Steamed Rice <span class="dietary">v ve gf</span></div></div>
+  </div>
+
+  <div class="section" id="sec-larger" data-nav="Larger" data-tab="food">
+    <div class="section-title">Larger</div>
+    <div class="item"><div class="item-name">Pork Cutlet Katsu</div><div class="item-desc">Curry gravy sauce, new potatoes</div></div>
+    <div class="item"><div class="item-name">Steamed WA Snapper</div></div>
+    <div class="item"><div class="item-name">Black Pepper Shoyu Udon</div><div class="item-desc">Asian mushroom, green salsa</div></div>
+    <div class="item"><div class="item-name">Honey-Ginger Beef Short Rib</div><div class="item-desc">Aji mirin, nori puree, shiso</div></div>
+    <div class="item"><div class="item-name">Roast Duck Breast</div><div class="item-desc">Plum, senbo tartare, sugar peas, teriyaki</div></div>
+    <div class="item"><div class="item-name">Charred Miso Cabbage <span class="dietary">v ve gf</span></div><div class="item-desc">Edamame, grilled corn, sweet &amp; sour nikkei sauce</div></div>
+  </div>
+
+  <div class="wagyu-section" id="sec-wagyu" data-nav="Wagyu" data-tab="food">
+    <div class="section-title">Wagyu</div>
+    <div class="item"><div class="item-name">Stone Axe 9+ Full Blood Wagyu 200/400g</div><div class="item-desc">Japanese mustard, garlic soy butter sauce</div></div>
+    <div class="omakase">
+      <div class="omakase-title">Omakase at Papi Katsu</div>
+      <div class="omakase-desc">A seasonal and ever-evolving premium tasting experience</div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-sweet" data-nav="Sweet" data-tab="food">
+    <div class="section-title">Sweet</div>
+    <div class="item"><div class="item-name">Dark Chocolate Br&ucirc;l&eacute;e</div><div class="item-desc">Raspberry, biscuit sorbet, tartufo melt</div></div>
+    <div class="item"><div class="item-name">Candied Banana Parfait</div><div class="item-desc">Oreo ice cream, banana caramel</div></div>
+    <div class="item"><div class="item-name">Milk Soft Serve</div></div>
+    <div class="item"><div class="item-name">Tofu Donut Holes</div><div class="item-desc">Cinnamon, kinako dust, glaze</div></div>
+  </div>
+
+</div><!-- end menu-grid -->
+</div><!-- end tab-food -->
+
+<!-- ════ DRINKS TAB ════ -->
+<div id="tab-drinks" class="tab-content">
+<div class="menu-grid">
+
+  <div class="section" id="sec-cocktails" data-nav="Cocktails" data-tab="drinks">
+    <div class="section-title">Cocktails</div>
+    <div class="item"><div class="item-name">Papi Slipper</div><div class="item-desc">Melon, cucumber, tequila, chartreuse, citrus</div></div>
+    <div class="item"><div class="item-name">Papi Fans</div><div class="item-desc">Sake, lychee, coconut, spritz, ginger ale</div></div>
+    <div class="item"><div class="item-name">Indigo Kiss</div><div class="item-desc">Gin, white tea, pineapple, coconut, nigori sake, coconut cream</div></div>
+    <div class="item"><div class="item-name">Yuzu Lychee Martini</div></div>
+    <div class="item"><div class="item-name">Kosho &amp; Tell</div><div class="item-desc">Tequila, vodka, matcha syrup, jalapeno chilli, yuzu</div></div>
+    <div class="item"><div class="item-name">The Ring-O</div><div class="item-desc">Whisky, fresh green apple, cinnamon</div></div>
+    <div class="item"><div class="item-name">Matcha Ichigo Cream</div><div class="item-desc">Old Young &amp; Penistone, matcha tea, strawberry cream, liqueur</div></div>
+    <div class="item"><div class="item-name">Sakura Plum Sour</div><div class="item-desc">Vodka, bourbon, elderflower, lemon, plum</div></div>
+  </div>
+
+  <div class="section" id="sec-spritz" data-nav="Spritz" data-tab="drinks">
+    <div class="section-title">Spritz</div>
+    <div class="item"><div class="item-name">Kyoto Breeze</div><div class="item-desc">Sparkling, lychee syrup, sparkling wine, soda</div></div>
+    <div class="item"><div class="item-name">Peach Sereni-Tea</div><div class="item-desc">Peach, jasmine tea, sparkling ros&eacute; &amp; soda</div></div>
+  </div>
+
+  <div class="section" id="sec-white" data-nav="White" data-tab="drinks">
+    <div class="section-title">White Wine</div>
+    <div class="item"><div class="item-name">Galafrey 'Dry Grown' Riesling</div></div>
+    <div class="item"><div class="item-name">Patritti Sauvignon Blanc</div></div>
+    <div class="item"><div class="item-name">Longpoint Pinot Gris</div></div>
+    <div class="item"><div class="item-name">Nomad's Garden Chardonnay</div></div>
+    <div class="item"><div class="item-name">Kanta Riesling</div></div>
+    <div class="item"><div class="item-name">LS Merchants Riesling</div></div>
+    <div class="item"><div class="item-name">Koerner Waterfall Riesling</div></div>
+    <div class="item"><div class="item-name">Somos Vermentino</div></div>
+    <div class="item"><div class="item-name">Domaine Christian Salmon Sancerre</div></div>
+    <div class="item"><div class="item-name">Charly Ranek 'Te Muna' Sauvignon Blanc</div></div>
+    <div class="item"><div class="item-name">Shaw + Smith Sauvignon Blanc</div></div>
+    <div class="item"><div class="item-name">Moss Wood 'Elsa' Sauvignon Blanc</div></div>
+    <div class="item"><div class="item-name">Mmadi Chenin Blanc</div></div>
+    <div class="item"><div class="item-name">Tamellini 'Soave'</div></div>
+    <div class="item"><div class="item-name">Vasse Felix Heytesbury Chardonnay</div></div>
+  </div>
+
+  <div class="section" id="sec-rose" data-nav="Ros&eacute;" data-tab="drinks">
+    <div class="section-title">Ros&eacute;</div>
+    <div class="item"><div class="item-name">Marschall &amp; Burch 'Villages'</div></div>
+  </div>
+
+  <div class="section" id="sec-red" data-nav="Red" data-tab="drinks">
+    <div class="section-title">Red Wine</div>
+    <div class="item"><div class="item-name">Crittenden 'Geppetto' Pinot Noir</div></div>
+    <div class="item"><div class="item-name">In Praise of Shadows Grenache</div></div>
+    <div class="item"><div class="item-name">Epsilon Shiraz</div></div>
+    <div class="item"><div class="item-name">Forest Hill Malbec</div></div>
+    <div class="item"><div class="item-name">Gulliview Estate Shiraz</div></div>
+  </div>
+
+  <div class="section" id="sec-sparkling" data-nav="Sparkling" data-tab="drinks">
+    <div class="section-title">Sparkling</div>
+    <div class="item"><div class="item-name">Prosecco Ca' Selva</div></div>
+    <div class="item"><div class="item-name">Varchon &amp; Clerc Cremant</div></div>
+    <div class="item"><div class="item-name">Taittinger 'Cuv&eacute;e Prestige'</div></div>
+  </div>
+
+  <div class="section" id="sec-cider" data-nav="Cider" data-tab="drinks">
+    <div class="section-title">Cider</div>
+    <div class="item"><div class="item-name">Rocky Ridge Crisp Mid</div></div>
+  </div>
+
+</div><!-- end menu-grid -->
+</div><!-- end tab-drinks -->
+
+</div><!-- end menu-content -->
+
+<div class="footer">
+  <p>
+    gf &mdash; gluten free &bull; v &mdash; vegetarian &bull; ve &mdash; vegan option<br>
+    Please inform staff of any dietary requirements or allergies.
+  </p>
+</div>
+
+<div class="jp-tooltip" id="jp-tooltip">
+  <span class="jp-tooltip-close" onclick="hideTooltip()">&times;</span>
+  <div class="jp-tooltip-word" id="tt-word"></div>
+  <div class="jp-tooltip-japanese" id="tt-japanese"></div>
+  <div class="jp-tooltip-meaning" id="tt-meaning"></div>
+</div>
+
+<script>
+  // ── Tab switching ──
+  let currentTab = 'food';
+
+  function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.querySelector(`.tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+    buildJumpNav(tab);
+    document.querySelector('.menu-content').scrollIntoView({ behavior: 'instant' });
+    setTimeout(checkPin, 100);
+  }
+
+  // ── Jump Nav ──
+  function buildJumpNav(tab) {
+    const nav = document.getElementById('jump-nav');
+    nav.innerHTML = '';
+    document.querySelectorAll(`[data-tab="${tab}"]`).forEach(sec => {
+      const label = sec.dataset.nav;
+      const id = sec.id;
+      const pill = document.createElement('a');
+      pill.className = 'jump-pill';
+      pill.href = '#' + id;
+      pill.innerHTML = label;
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        // highlight pill briefly
+        document.querySelectorAll('.jump-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        setTimeout(() => pill.classList.remove('active'), 1000);
+      });
+      nav.appendChild(pill);
+    });
+  }
+
+  // ── Banquet toggle ──
+  function toggleBanquet(id) {
+    const item = document.getElementById(id);
+    item.classList.toggle('open');
+    setTimeout(checkPin, 600);
+  }
+
+  // ── Glossary ──
+  const glossary = {
+    'edamame': { jp: '\u679d\u8c46 (\u3048\u3060\u307e\u3081)', meaning: 'Young soybeans, steamed or boiled in the pod and lightly salted. A classic starter in Japanese dining \u2014 you squeeze the beans out of the pod to eat them.' },
+    'miso': { jp: '\u5473\u564c (\u307f\u305d)', meaning: 'A rich, savoury paste made from fermented soybeans. It\'s the base of miso soup and is used widely in Japanese cooking for marinades, glazes, and dressings.' },
+    'gyoza': { jp: '\u9903\u5b50 (\u304e\u3087\u3046\u3056)', meaning: 'Japanese dumplings with a thin wrapper, typically pan-fried so one side is crispy and the other is soft. Filled with meat or vegetables.' },
+    'kakiage': { jp: '\u304b\u304d\u63da\u3052', meaning: 'A style of tempura where small pieces of vegetables (or seafood) are mixed together and deep-fried as a crispy fritter.' },
+    'katsu': { jp: '\u30ab\u30c4', meaning: 'A breaded and deep-fried cutlet \u2014 the Japanese take on a schnitzel. Usually pork (tonkatsu) or chicken, coated in panko breadcrumbs for extra crunch.' },
+    'sando': { jp: '\u30b5\u30f3\u30c9', meaning: 'Short for "sandwich" in Japanese. Japanese sandos are famous for their pillowy soft milk bread and generous fillings.' },
+    'karaage': { jp: '\u5510\u63da\u3052 (\u304b\u3089\u3042\u3052)', meaning: 'Japanese-style fried chicken. The meat is marinated in soy, ginger, and garlic, coated lightly in potato starch, and fried until incredibly crispy.' },
+    'tsukune': { jp: '\u3064\u304f\u306d', meaning: 'Japanese chicken meatballs, made from minced chicken and typically grilled on skewers with a sweet soy (tare) glaze.' },
+    'wagyu': { jp: '\u548c\u725b (\u308f\u304e\u3085\u3046)', meaning: 'Literally "Japanese cow." Wagyu cattle are raised with special care, producing beef famous for its intense marbling, buttery texture, and rich flavour. A5 is the highest grade.' },
+    'temaki': { jp: '\u624b\u5dfb\u304d (\u3066\u307e\u304d)', meaning: 'A hand-rolled sushi cone. Nori seaweed is wrapped into a cone shape and filled with rice, fish, and toppings \u2014 eaten by hand.' },
+    'sashimi': { jp: '\u523a\u8eab (\u3055\u3057\u307f)', meaning: 'Thinly sliced raw fish or seafood, served without rice. It\'s all about the purity and freshness of the ingredient \u2014 one of the highest forms of Japanese cuisine.' },
+    'nigiri': { jp: '\u63e1\u308a (\u306b\u304e\u308a)', meaning: 'A small mound of vinegared rice with a slice of raw fish or seafood pressed on top. The word means "to grip" \u2014 referring to how the rice is shaped by hand.' },
+    'maki': { jp: '\u5dfb\u304d (\u307e\u304d)', meaning: 'Sushi rolled in nori seaweed with rice and fillings inside. "Maki" means "to roll." The most familiar style of sushi worldwide.' },
+    'uramaki': { jp: '\u88cf\u5dfb\u304d (\u3046\u3089\u307e\u304d)', meaning: 'An inside-out sushi roll where the rice is on the outside and nori is on the inside. "Ura" means "reverse."' },
+    'tataki': { jp: '\u305f\u305f\u304d', meaning: 'A technique where meat or fish is briefly seared on the outside but left raw inside, then thinly sliced. Lets you taste both the sear and the pure ingredient.' },
+    'ponzu': { jp: '\u30dd\u30f3\u9162', meaning: 'A tangy citrus-based sauce made with soy sauce, rice vinegar, and yuzu or other citrus. Bright and refreshing \u2014 perfect with raw dishes and grilled meats.' },
+    'yuzu': { jp: '\u67da\u5b50 (\u3086\u305a)', meaning: 'A Japanese citrus fruit with an aromatic, floral flavour \u2014 somewhere between lemon, lime, and grapefruit. Used in dressings, sauces, cocktails, and desserts.' },
+    'shoyu': { jp: '\u91a4\u6cb9 (\u3057\u3087\u3046\u3086)', meaning: 'Japanese soy sauce. Lighter and more nuanced than Chinese soy sauce, it\'s an essential seasoning in almost every Japanese dish.' },
+    'udon': { jp: '\u3046\u3069\u3093', meaning: 'Thick, chewy wheat noodles served in hot broth or stir-fried. One of Japan\'s great comfort foods \u2014 satisfying and warming.' },
+    'mirin': { jp: '\u307f\u308a\u3093', meaning: 'A sweet Japanese rice wine used in cooking. It adds a gentle sweetness and beautiful glaze to dishes like teriyaki.' },
+    'nori': { jp: '\u6d77\u82d4 (\u306e\u308a)', meaning: 'Dried edible seaweed sheets. Used to wrap sushi, garnish rice bowls, and add umami flavour. A staple of Japanese cuisine.' },
+    'shiso': { jp: '\u7d2b\u8607 (\u3057\u305d)', meaning: 'A fragrant Japanese herb from the mint family. It has a unique, bright flavour \u2014 slightly minty, slightly basil-like. Used as a garnish and in salads.' },
+    'teriyaki': { jp: '\u7167\u308a\u713c\u304d (\u3066\u308a\u3084\u304d)', meaning: 'A cooking technique where food is glazed with a sweet soy sauce mixture while grilling. "Teri" means lustre \u2014 referring to the beautiful shiny glaze.' },
+    'tempura': { jp: '\u5929\u3077\u3089 (\u3066\u3093\u3077\u3089)', meaning: 'Seafood or vegetables dipped in a light, cold batter and deep-fried until delicate and crispy. The batter is kept thin so the ingredient shines through.' },
+    'kinpira': { jp: '\u304d\u3093\u3074\u3089', meaning: 'A Japanese cooking style where vegetables are saut\u00e9ed and simmered in soy sauce and mirin. Often made with root vegetables like burdock or carrot \u2014 sweet, savoury, and slightly crunchy.' },
+    'omakase': { jp: '\u304a\u307e\u304b\u305b', meaning: '"I\'ll leave it up to you." A dining experience where the chef chooses each course for you, based on the freshest ingredients available. It\'s a mark of trust between diner and chef.' },
+    'tofu': { jp: '\u8c46\u8150 (\u3068\u3046\u3075)', meaning: 'A soft, silky food made from coagulated soy milk. A protein staple in Japanese cuisine with a delicate, clean flavour that absorbs other flavours beautifully.' },
+    'kinako': { jp: '\u304d\u306a\u7c89', meaning: 'Roasted soybean flour with a warm, nutty flavour. Commonly used as a dusting on Japanese sweets and desserts.' },
+    'nikkei': { jp: '\u65e5\u7cfb', meaning: 'Refers to Japanese-Peruvian fusion cuisine. "Nikkei" originally means Japanese diaspora \u2014 the food blends Japanese techniques with South American ingredients and bold flavours.' },
+    'sake': { jp: '\u9152 (\u3055\u3051)', meaning: 'Japanese rice wine, brewed from polished rice. Served warm or chilled. The more the rice is polished, the more refined and delicate the flavour.' },
+    'nigori': { jp: '\u6fc1\u308a (\u306b\u3054\u308a)', meaning: 'Unfiltered sake with a cloudy, milky appearance. It has a sweeter, creamier taste than clear sake \u2014 almost dessert-like.' },
+    'matcha': { jp: '\u62b9\u8336 (\u307e\u3063\u3061\u3083)', meaning: 'Finely ground green tea powder. It has a rich, slightly bitter, earthy flavour. Used in tea ceremonies, desserts, and increasingly in cocktails.' },
+    'ichigo': { jp: '\u82fa (\u3044\u3061\u3054)', meaning: 'The Japanese word for strawberry. Japan is famous for its premium strawberries \u2014 they\'re a prized gift and feature in many desserts.' },
+    'sakura': { jp: '\u685c (\u3055\u304f\u3089)', meaning: 'Cherry blossom \u2014 Japan\'s most iconic flower. It represents the beauty of fleeting moments. In food and drink, sakura adds a delicate floral note.' },
+    'kosho': { jp: '\u80e1\u6912 (\u3053\u3057\u3087\u3046)', meaning: 'Japanese pepper. Yuzu kosho is a spicy, citrusy condiment made from chilli peppers, yuzu zest, and salt \u2014 a punchy flavour unique to Japan.' },
+    'furikake': { jp: '\u3075\u308a\u304b\u3051', meaning: 'A dry Japanese seasoning sprinkled over rice. Typically a savoury mix of seaweed, sesame seeds, dried fish, and salt. Adds umami and crunch to simple dishes.' },
+    'arame': { jp: '\u8352\u5e03 (\u3042\u3089\u3081)', meaning: 'A mild, slightly sweet edible seaweed. It\'s shredded into thin strands and used in salads, rice dishes, and as a garnish.' },
+    'rayu': { jp: '\u30e9\u30fc\u6cb9', meaning: 'Japanese chilli oil \u2014 sesame oil infused with chilli peppers. Adds a warm, spicy kick. Often drizzled on gyoza, ramen, and grilled dishes.' },
+    'wakame': { jp: '\u308f\u304b\u3081', meaning: 'A delicate, slightly sweet seaweed most commonly found in miso soup and salads. It rehydrates into soft, silky strands.' },
+  };
+
+  // Wrap glossary terms
+  function wrapTerms() {
+    const items = document.querySelectorAll('.item-name, .item-desc, .banquet-desc, .banquet-course-name, .banquet-course-desc, .section-title, .omakase-title, .omakase-desc');
+    items.forEach(el => {
+      let html = el.innerHTML;
+      Object.keys(glossary).forEach(term => {
+        const regex = new RegExp(`\\b(${term})\\b(?![^<]*>)`, 'gi');
+        html = html.replace(regex, (match) => {
+          return `<span class="jp-term" data-term="${term.toLowerCase()}">${match}</span>`;
+        });
+      });
+      el.innerHTML = html;
+    });
+  }
+
+  // Tooltip
+  const tooltip = document.getElementById('jp-tooltip');
+
+  function showTooltip(term) {
+    const entry = glossary[term];
+    if (!entry) return;
+    document.getElementById('tt-word').textContent = term.charAt(0).toUpperCase() + term.slice(1);
+    document.getElementById('tt-japanese').textContent = entry.jp;
+    document.getElementById('tt-meaning').textContent = entry.meaning;
+    tooltip.classList.add('visible');
+  }
+
+  function hideTooltip() {
+    tooltip.classList.remove('visible');
+  }
+
+  document.addEventListener('click', (e) => {
+    const term = e.target.closest('.jp-term');
+    if (term) {
+      e.stopPropagation();
+      showTooltip(term.dataset.term);
+    } else if (!e.target.closest('.jp-tooltip')) {
+      hideTooltip();
+    }
+  });
+
+  // Check if content needs scrolling and pin header accordingly
+  function checkPin() {
+    const header = document.querySelector('.sticky-header');
+    const jumpNav = document.getElementById('jump-nav');
+    const needsPin = document.body.scrollHeight > window.innerHeight + 50;
+    header.classList.toggle('pinned', needsPin);
+    jumpNav.classList.toggle('visible', needsPin);
+    document.body.classList.toggle('has-pinned-header', needsPin);
+    document.documentElement.classList.toggle('has-pinned-header', needsPin);
+  }
+
+  // Init
+  wrapTerms();
+  buildJumpNav('food');
+  checkPin();
+  window.addEventListener('resize', checkPin);
+</script>
+
+</body>
+</html>
