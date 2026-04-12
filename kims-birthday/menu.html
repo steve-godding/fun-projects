@@ -414,7 +414,7 @@
   <div class="section" id="sec-banquets" data-nav="Banquets" data-tab="food">
     <div class="section-title">Banquets</div>
 
-    <div class="banquet-item" id="bq1" onclick="toggleBanquet('bq1')">
+    <div class="banquet-item" id="bq1" onclick="toggleBanquet('bq1', event)">
       <div class="banquet-header">
         <div>
           <div class="banquet-name">Feed Me Papi</div>
@@ -422,7 +422,7 @@
         </div>
         <div class="banquet-toggle">&#9662;</div>
       </div>
-      <div class="banquet-courses" onclick="event.stopPropagation()">
+      <div class="banquet-courses">
         <div class="banquet-courses-inner">
           <div class="banquet-course"><div class="banquet-course-name">Miso Soup</div><div class="banquet-course-desc">Silken tofu, wakame</div></div>
           <div class="banquet-course"><div class="banquet-course-name">Edamame</div><div class="banquet-course-desc">Spicy papi seasoning</div></div>
@@ -439,7 +439,7 @@
       </div>
     </div>
 
-    <div class="banquet-item" id="bq2" onclick="toggleBanquet('bq2')">
+    <div class="banquet-item" id="bq2" onclick="toggleBanquet('bq2', event)">
       <div class="banquet-header">
         <div>
           <div class="banquet-name">Sugar Papi</div>
@@ -447,7 +447,7 @@
         </div>
         <div class="banquet-toggle">&#9662;</div>
       </div>
-      <div class="banquet-courses" onclick="event.stopPropagation()">
+      <div class="banquet-courses">
         <div class="banquet-courses-inner">
           <div class="banquet-course"><div class="banquet-course-name">Edamame</div><div class="banquet-course-desc">Spicy papi seasoning</div></div>
           <div class="banquet-course"><div class="banquet-course-name">Sashimi Plate</div><div class="banquet-course-desc">Selection of daily seafood</div></div>
@@ -681,7 +681,9 @@
   }
 
   // ── Banquet toggle ──
-  function toggleBanquet(id) {
+  function toggleBanquet(id, e) {
+    // Don't toggle if tapping a Japanese term or the tooltip
+    if (e && (e.target.closest('.jp-term') || e.target.closest('.jp-tooltip'))) return;
     const item = document.getElementById(id);
     item.classList.toggle('open');
     setTimeout(checkPin, 600);
