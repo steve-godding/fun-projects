@@ -224,7 +224,7 @@
   }
 
   .banquet-toggle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #e91e8c;
     line-height: 1;
     transition: transform 0.3s ease;
@@ -233,7 +233,7 @@
   }
 
   .banquet-item.open .banquet-toggle {
-    transform: rotate(45deg);
+    transform: rotate(180deg);
   }
 
   .banquet-courses {
@@ -329,26 +329,26 @@
 
   .jp-tooltip {
     position: fixed;
-    left: 50%;
-    bottom: 1.5rem;
-    transform: translateX(-50%) translateY(10px);
     background: #1a1a1a;
     color: #fff;
     border-radius: 14px;
     padding: 1rem 1.2rem;
     width: calc(100% - 2rem);
-    max-width: 360px;
+    max-width: 340px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.3);
     z-index: 100;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: opacity 0.25s ease;
+    /* Default: bottom-centre for phones */
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
   }
 
   .jp-tooltip.visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translateX(-50%) translateY(0);
   }
 
   .jp-tooltip-word {
@@ -420,9 +420,9 @@
           <div class="banquet-name">Feed Me Papi</div>
           <div class="banquet-desc">An introduction to Papi&rsquo;s favourites &mdash; tap to see the courses</div>
         </div>
-        <div class="banquet-toggle">+</div>
+        <div class="banquet-toggle">&#9662;</div>
       </div>
-      <div class="banquet-courses">
+      <div class="banquet-courses" onclick="event.stopPropagation()">
         <div class="banquet-courses-inner">
           <div class="banquet-course"><div class="banquet-course-name">Miso Soup</div><div class="banquet-course-desc">Silken tofu, wakame</div></div>
           <div class="banquet-course"><div class="banquet-course-name">Edamame</div><div class="banquet-course-desc">Spicy papi seasoning</div></div>
@@ -445,9 +445,9 @@
           <div class="banquet-name">Sugar Papi</div>
           <div class="banquet-desc">The indulgence you didn&rsquo;t know you needed &mdash; tap to see the courses</div>
         </div>
-        <div class="banquet-toggle">+</div>
+        <div class="banquet-toggle">&#9662;</div>
       </div>
-      <div class="banquet-courses">
+      <div class="banquet-courses" onclick="event.stopPropagation()">
         <div class="banquet-courses-inner">
           <div class="banquet-course"><div class="banquet-course-name">Edamame</div><div class="banquet-course-desc">Spicy papi seasoning</div></div>
           <div class="banquet-course"><div class="banquet-course-name">Sashimi Plate</div><div class="banquet-course-desc">Selection of daily seafood</div></div>
@@ -748,12 +748,41 @@
   // Tooltip
   const tooltip = document.getElementById('jp-tooltip');
 
-  function showTooltip(term) {
+  function showTooltip(term, el) {
     const entry = glossary[term];
     if (!entry) return;
     document.getElementById('tt-word').textContent = term.charAt(0).toUpperCase() + term.slice(1);
     document.getElementById('tt-japanese').textContent = entry.jp;
     document.getElementById('tt-meaning').textContent = entry.meaning;
+
+    // On wider screens (iPad), position near the tapped word
+    if (window.innerWidth >= 600 && el) {
+      const rect = el.getBoundingClientRect();
+      const tooltipHeight = 160;
+      const pad = 12;
+
+      // Horizontal: near the word but clamped to screen
+      let left = rect.left + rect.width / 2;
+      left = Math.max(180, Math.min(left, window.innerWidth - 180));
+      tooltip.style.left = left + 'px';
+      tooltip.style.transform = 'translateX(-50%)';
+
+      // Vertical: prefer below the word, but flip above if near bottom
+      if (rect.bottom + tooltipHeight + pad < window.innerHeight) {
+        tooltip.style.bottom = 'auto';
+        tooltip.style.top = (rect.bottom + pad) + 'px';
+      } else {
+        tooltip.style.top = 'auto';
+        tooltip.style.bottom = (window.innerHeight - rect.top + pad) + 'px';
+      }
+    } else {
+      // Phone: fixed bottom centre
+      tooltip.style.left = '50%';
+      tooltip.style.transform = 'translateX(-50%)';
+      tooltip.style.bottom = '1.5rem';
+      tooltip.style.top = 'auto';
+    }
+
     tooltip.classList.add('visible');
   }
 
@@ -765,10 +794,9 @@
     const term = e.target.closest('.jp-term');
     if (term) {
       e.stopPropagation();
-      showTooltip(term.dataset.term);
-    } else if (!e.target.closest('.jp-tooltip')) {
-      hideTooltip();
+      showTooltip(term.dataset.term, term);
     }
+    // Tooltip only closes via the X button — not by tapping elsewhere
   });
 
   // Check if content needs scrolling and pin header accordingly
