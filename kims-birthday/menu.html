@@ -755,19 +755,22 @@
     document.getElementById('tt-japanese').textContent = entry.jp;
     document.getElementById('tt-meaning').textContent = entry.meaning;
 
-    // On wider screens (iPad), position near the tapped word
-    if (window.innerWidth >= 600 && el) {
+    if (el) {
       const rect = el.getBoundingClientRect();
       const tooltipHeight = 160;
       const pad = 12;
 
-      // Horizontal: near the word but clamped to screen
-      let left = rect.left + rect.width / 2;
-      left = Math.max(180, Math.min(left, window.innerWidth - 180));
-      tooltip.style.left = left + 'px';
+      // Horizontal: centre on screen for phones, near word for wider
+      if (window.innerWidth >= 600) {
+        let left = rect.left + rect.width / 2;
+        left = Math.max(180, Math.min(left, window.innerWidth - 180));
+        tooltip.style.left = left + 'px';
+      } else {
+        tooltip.style.left = '50%';
+      }
       tooltip.style.transform = 'translateX(-50%)';
 
-      // Vertical: prefer below the word, but flip above if near bottom
+      // Vertical: prefer below the word, flip above if near bottom
       if (rect.bottom + tooltipHeight + pad < window.innerHeight) {
         tooltip.style.bottom = 'auto';
         tooltip.style.top = (rect.bottom + pad) + 'px';
@@ -775,12 +778,6 @@
         tooltip.style.top = 'auto';
         tooltip.style.bottom = (window.innerHeight - rect.top + pad) + 'px';
       }
-    } else {
-      // Phone: fixed bottom centre
-      tooltip.style.left = '50%';
-      tooltip.style.transform = 'translateX(-50%)';
-      tooltip.style.bottom = '1.5rem';
-      tooltip.style.top = 'auto';
     }
 
     tooltip.classList.add('visible');
