@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japan 2026 · Our Cruise</title>
+<meta name="description" content="A 10-night Diamond Princess cruise round Japan & Korea, September 2026.">
+<style>
+  :root{
+    --indigo:#16243f;--indigo2:#21355c;--vermilion:#c8442f;--gold:#c9a24b;
+    --paper:#f5f0e6;--paper2:#ece3d2;--ink:#1d2230;--muted:#5c6373;
+    --serif:"Hiragino Mincho ProN","Yu Mincho",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    --fs:1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:calc(17px*var(--fs));line-height:1.65;overflow-x:hidden}
+  body.contrast{--paper:#fffdf7;--paper2:#fff;--ink:#000;--muted:#333}
+  h1,h2,h3,.serif{font-family:var(--serif)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(22,36,63,.94);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:space-between;padding:12px 22px;color:#fff}
+  nav .brand{font-family:var(--serif);font-size:calc(20px*var(--fs));letter-spacing:.04em}
+  nav .brand b{color:var(--gold)}
+  nav .links{display:flex;gap:18px;flex-wrap:wrap}
+  nav a{color:#e9e2d2;text-decoration:none;font-size:calc(14px*var(--fs));opacity:.85}
+  nav a:hover{opacity:1;color:#fff}
+  .a11y{background:var(--gold);color:#16243f;border:none;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:calc(13px*var(--fs))}
+  .a11y:active{transform:scale(.96)}
+
+  header.hero{position:relative;color:#fff;text-align:center;padding:96px 22px 120px;
+    background:linear-gradient(rgba(15,24,48,.58),rgba(13,22,44,.86)),
+      url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg/1280px-View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg') center 28%/cover;}
+  .torii{font-size:54px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+  header.hero .kicker{letter-spacing:.42em;text-transform:uppercase;color:var(--gold);font-size:calc(13px*var(--fs));margin:14px 0 6px}
+  header.hero h1{font-size:clamp(42px,9vw,86px);line-height:1.02;font-weight:700;text-shadow:0 4px 24px rgba(0,0,0,.5)}
+  header.hero h1 span{display:block;color:var(--gold)}
+  header.hero .sub{margin-top:16px;font-size:calc(18px*var(--fs));color:#eef2f8;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+  .crew{margin-top:10px;color:#cdd6e8;font-size:calc(14px*var(--fs))}
+  .countdown{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+  .cd{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:14px 18px;min-width:84px;backdrop-filter:blur(3px)}
+  .cd b{display:block;font-family:var(--serif);font-size:calc(34px*var(--fs));color:#fff;line-height:1}
+  .cd span{font-size:calc(11px*var(--fs));letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+
+  section{padding:72px 0}
+  .eyebrow{text-align:center;letter-spacing:.34em;text-transform:uppercase;color:var(--vermilion);font-size:calc(13px*var(--fs));font-weight:700}
+  .stitle{text-align:center;font-size:clamp(28px,5vw,44px);margin:8px 0 6px}
+  .lead{text-align:center;max-width:680px;margin:0 auto 14px;color:var(--muted)}
+  .rule{width:60px;height:3px;background:var(--gold);margin:18px auto 40px;border-radius:2px}
+
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .fact{background:#fff;border-radius:16px;padding:24px 18px;text-align:center;box-shadow:0 10px 30px rgba(22,36,63,.07)}
+  body.contrast .fact{border:1px solid #ccc}
+  .fact b{display:block;font-family:var(--serif);font-size:calc(30px*var(--fs));color:var(--indigo)}
+  .fact span{font-size:calc(13px*var(--fs));color:var(--muted)}
+
+  .filters{display:flex;gap:10px;justify-content:center;margin-bottom:30px;flex-wrap:wrap}
+  .filters button{border:1px solid var(--indigo2);background:transparent;color:var(--indigo2);padding:8px 18px;border-radius:999px;cursor:pointer;font-size:calc(14px*var(--fs));font-weight:600}
+  .filters button.on{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+  .timeline{position:relative;max-width:860px;margin:0 auto;padding-left:34px}
+  .timeline:before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--gold),var(--vermilion))}
+  .day{position:relative;margin-bottom:18px}
+  .day:before{content:"";position:absolute;left:-30px;top:24px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--vermilion);z-index:2}
+  .day.sea:before{border-color:var(--indigo2)}
+  .day.port:before{border-color:var(--gold);background:var(--gold)}
+  .card{background:#fff;border-radius:16px;box-shadow:0 8px 26px rgba(22,36,63,.08);overflow:hidden}
+  body.contrast .card{border:1px solid #ccc}
+  .banner{position:relative;line-height:0;cursor:pointer;background:var(--indigo)}
+  .pimg{width:100%;height:210px;object-fit:cover;display:block}
+  .banner:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(13,22,44,.82),rgba(13,22,44,.06) 55%,rgba(13,22,44,.18));pointer-events:none}
+  .banner .bname{position:absolute;left:18px;bottom:12px;z-index:2;color:#fff;font-family:var(--serif);font-size:calc(30px*var(--fs));text-shadow:0 2px 12px rgba(0,0,0,.6);letter-spacing:.02em}
+  .banner .bmeta{position:absolute;right:18px;bottom:16px;z-index:2;color:#f0e4c6;font-size:calc(12px*var(--fs));letter-spacing:.08em;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+  .badge{position:absolute;top:12px;right:12px;z-index:4;background:var(--gold);color:#16243f;font-weight:700;font-size:calc(11px*var(--fs));letter-spacing:.05em;padding:6px 12px;border-radius:999px;box-shadow:0 2px 12px rgba(0,0,0,.4);cursor:help}
+  .badge .tip{position:absolute;top:38px;right:0;width:240px;background:#16243f;color:#eef2f8;font-weight:400;letter-spacing:0;font-size:calc(12.5px*var(--fs));line-height:1.45;text-align:left;padding:11px 13px;border-radius:10px;box-shadow:0 10px 26px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .2s,transform .2s}
+  .badge:hover .tip,.badge:focus .tip{opacity:1;visibility:visible;transform:none}
+  .chead{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:default}
+  .day.port .chead{cursor:pointer}
+  .dot-date{font-family:var(--serif);text-align:center;line-height:1;min-width:54px}
+  .dot-date b{display:block;font-size:calc(24px*var(--fs));color:var(--vermilion)}
+  .dot-date span{font-size:calc(11px*var(--fs));text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+  .ctitle{flex:1}
+  .ctitle h3{font-size:calc(20px*var(--fs));line-height:1.2}
+  .ctitle .meta{font-size:calc(13px*var(--fs));color:var(--muted);margin-top:2px}
+  .tag{font-size:calc(11px*var(--fs));font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .tag.port{background:#fbf1d8;color:#9a7416}.tag.sea{background:#e7edf7;color:var(--indigo2)}.tag.travel{background:#f7e6e2;color:var(--vermilion)}
+  .chev{color:var(--muted);font-size:calc(20px*var(--fs));transition:transform .3s}
+  .day.open .chev{transform:rotate(180deg)}
+  .body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+  .day.open .body{max-height:1200px}
+  .bodyinner{padding:6px 20px 22px}
+  .blk{margin-top:18px}
+  .blk h4{font-size:calc(13px*var(--fs));letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+  .blk.high h4{color:var(--gold)}.blk.plan h4{color:var(--vermilion)}
+  .blk.about p{font-size:calc(15.5px*var(--fs))}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--paper2);border-radius:8px;padding:6px 12px;font-size:calc(13.5px*var(--fs))}
+  .plan p{font-size:calc(15.5px*var(--fs))}
+  .pill{display:inline-block;margin-top:10px;background:var(--indigo);color:#fff;font-size:calc(12px*var(--fs));padding:4px 12px;border-radius:999px;font-weight:600}
+  .pill.diy{background:var(--vermilion)}.pill.rest{background:#5c6373}.pill.book{background:#2f7a4d}.pill.embark{background:var(--gold);color:#16243f}
+
+  .dineband{background:linear-gradient(135deg,var(--indigo),var(--indigo2));color:#fff}
+  .dineband .eyebrow{color:var(--gold)}.dineband .lead{color:#cfd8ea}
+  .hometable{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:28px;text-align:center;max-width:640px;margin:0 auto 36px}
+  .hometable .big{font-family:var(--serif);font-size:calc(30px*var(--fs));color:var(--gold)}
+  .hometable p{color:#d9e1f0;margin-top:6px}
+  .rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .r{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:20px}
+  .r .ic{font-size:30px}.r h4{font-family:var(--serif);font-size:calc(19px*var(--fs));margin:8px 0 2px}
+  .r .ty{font-size:calc(11.5px*var(--fs));letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+  .r p{color:#cdd6e8;font-size:calc(14px*var(--fs));margin-top:8px}
+
+  .check{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:820px;margin:0 auto}
+  .ci{display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 6px 18px rgba(22,36,63,.06);cursor:pointer}
+  body.contrast .ci{border:1px solid #ccc}
+  .ci input{width:22px;height:22px;margin-top:2px;accent-color:var(--vermilion);flex:none;cursor:pointer}
+  .ci b{font-size:calc(15.5px*var(--fs))}.ci span{display:block;color:var(--muted);font-size:calc(13.5px*var(--fs))}
+  .ci.done b{text-decoration:line-through;color:var(--muted)}
+
+  footer{background:var(--indigo);color:#cdd6e8;text-align:center;padding:48px 22px}
+  footer .torii{font-size:36px}footer p{margin-top:10px;font-size:calc(14px*var(--fs))}
+  footer .sig{font-family:var(--serif);color:var(--gold);font-size:calc(20px*var(--fs));margin-top:6px}
+  footer .credit{margin-top:22px;font-size:calc(11.5px*var(--fs));color:#8b99b5}
+  footer .credit a{color:#aebbd4}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+  .reveal.in{opacity:1;transform:none}
+  @media(max-width:760px){.facts{grid-template-columns:repeat(2,1fr)}.rgrid{grid-template-columns:1fr}.check{grid-template-columns:1fr}nav .links{display:none}.pimg{height:180px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">日本 <b>Japan 2026</b></div>
+  <div class="links"><a href="#voyage">Voyage</a><a href="#itinerary">Itinerary</a><a href="#dining">Dining</a><a href="#ready">Before We Go</a></div>
+  <button class="a11y" id="bigBtn">A+ Bigger text</button>
+</nav>
+
+<header class="hero">
+  <div class="torii">⛩️</div>
+  <div class="kicker">Diamond Princess · Circle Japan</div>
+  <h1>Japan<span>September 2026</span></h1>
+  <p class="sub">A 10-night cruise round Japan &amp; Korea · 2–16 September 2026</p>
+  <p class="crew">The four of us — exploring it together</p>
+  <div class="countdown" id="cd">
+    <div class="cd"><b id="d">–</b><span>Days</span></div><div class="cd"><b id="h">–</b><span>Hours</span></div>
+    <div class="cd"><b id="m">–</b><span>Mins</span></div><div class="cd"><b id="s">–</b><span>Secs</span></div>
+  </div>
+</header>
+
+<section id="voyage">
+  <div class="wrap reveal">
+    <div class="eyebrow">The Voyage</div>
+    <h2 class="stitle">Round Japan on the Diamond Princess</h2>
+    <div class="rule"></div>
+    <p class="lead">We sail a great loop from Tokyo — up to Hokkaido, across to Korea, then down through Kyushu and back past Mt Fuji. Seven ports, two countries, and plenty of relaxed sea days in between.</p>
+    <div class="facts">
+      <div class="fact"><b>10</b><span>nights at sea</span></div><div class="fact"><b>7</b><span>ports of call</span></div>
+      <div class="fact"><b>2</b><span>countries</span></div><div class="fact"><b>4</b><span>of us</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="itinerary" style="background:var(--paper2)">
+  <div class="wrap">
+    <div class="eyebrow reveal">Day by Day</div>
+    <h2 class="stitle reveal">The Itinerary</h2>
+    <div class="rule reveal"></div>
+    <p class="lead reveal">Tap any <b>port</b> for its photo, highlights and what we're planning to do.</p>
+    <div class="filters reveal">
+      <button class="on" data-f="all">Everything</button><button data-f="port">Ports only</button><button data-f="other">Sea &amp; travel</button>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<section id="dining" class="dineband">
+  <div class="wrap">
+    <div class="eyebrow reveal">Where We'll Eat</div>
+    <h2 class="stitle reveal" style="color:#fff">Dining Aboard</h2>
+    <div class="rule reveal"></div>
+    <div class="hometable reveal">
+      <div class="big">Our table — 6:30 every night</div>
+      <p>We've booked the <b>Vivaldi Dining Room</b> as our standing table for the four of us at 6:30pm each evening — a guaranteed spot at the time we like, then specialty restaurants layered on whenever we fancy.</p>
+    </div>
+    <div class="rgrid" id="rest"></div>
+  </div>
+</section>
+
+<section id="ready">
+  <div class="wrap">
+    <div class="eyebrow reveal">A Little Homework</div>
+    <h2 class="stitle reveal">Before We Go</h2>
+    <div class="rule reveal"></div>
+    <p class="lead reveal">A few things for each of us to tick off before sailing. (Tap to check them off — saved on your own device.)</p>
+    <div class="check" id="check"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="torii">⛩️</div>
+  <p>See you on board, September 2026.</p>
+  <div class="sig">いってきます — Let's go!</div>
+  <p class="credit">Port photographs from <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a>, used under their respective Creative Commons licences.</p>
+</footer>
+
+<script>
+const IMG={
+ emb:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Minato_Mirai.jpg/1280px-Minato_Mirai.jpg",
+ hak:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Kanemori_Red_Brick_Warehouse_Hakodate_Hokkaido_pref_Japan01n.jpg/1280px-Kanemori_Red_Brick_Warehouse_Hakodate_Hokkaido_pref_Japan01n.jpg",
+ nii:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Niigata_from_Bandaijima_Building_20200906_P4.jpg/1280px-Niigata_from_Bandaijima_Building_20200906_P4.jpg",
+ bus:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Gamcheon_Houses%2C_2024.jpg/1280px-Gamcheon_Houses%2C_2024.jpg",
+ nag:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Nagasaki_City_View_from_Glover_Garden%2C_Nagasaki_2014.jpg/1280px-Nagasaki_City_View_from_Glover_Garden%2C_Nagasaki_2014.jpg",
+ kag:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Sakurajima55.jpg/1280px-Sakurajima55.jpg",
+ koc:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Kochi_Castle_2025.jpg/1280px-Kochi_Castle_2025.jpg",
+ shi:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Mount_Fuji_and_Miho_no_Matsubara_20170211.jpg/1280px-Mount_Fuji_and_Miho_no_Matsubara_20170211.jpg"
+};
+
+const DAYS=[
+ {date:"Sep 2",dow:"Wed",type:"travel",title:"Fly out of Perth",meta:"Perth → Tokyo via Singapore"},
+ {date:"Sep 3",dow:"Thu",type:"travel",title:"Arrive Tokyo",meta:"2 nights in Ikebukuro to find our feet"},
+ {date:"Sep 4",dow:"Fri",type:"travel",title:"Tokyo",meta:"Free day in the city"},
+ {date:"Sep 5",dow:"Sat",type:"port",img:"emb",title:"Embark · Yokohama",meta:"Board the Diamond Princess · sail 3:00pm",
+   about:`We board the Diamond Princess in Yokohama and cast off at 3:00pm. Time to find our cabins, get our bearings, and raise a glass on deck as Tokyo Bay slips behind us.`,
+   high:["Step aboard &amp; settle in","Sail-away from Yokohama","First dinner at our Vivaldi table"],
+   plan:`Board in the afternoon, settle into our (neighbouring!) cabins, and toast the start of the trip up on deck.`,pill:["Embarkation","embark"]},
+ {date:"Sep 6",dow:"Sun",type:"sea",title:"At Sea",meta:"A relaxing day cruising north"},
+ {date:"Sep 7",dow:"Mon",type:"port",img:"hak",title:"Hakodate",meta:"Hokkaido · 7:00am – 4:00pm",
+   about:`A historic port on Hokkaido's southern tip, ringed by hills and famous for the view from Mt Hakodate (one of Japan's "big three" night views), the star-shaped Goryōkaku fort, and a buzzing morning seafood market. Mild, low-humidity early-September weather makes it a gentle first stop.`,
+   high:["Asaichi morning seafood market","Mt Hakodate ropeway views","Red-brick Kanemori warehouses","Historic Motomachi quarter"],
+   plan:`An easy, do-it-ourselves day: breakfast at the morning market, a flat stroll round the bay and warehouses, then the ropeway up Mt Hakodate — the cable car does all the climbing.`,pill:["Our own day","diy"]},
+ {date:"Sep 8",dow:"Tue",type:"port",img:"nii",title:"Niigata",meta:"Sea of Japan coast · 9:00am – 6:00pm",
+   about:`The capital of Japan's rice-and-sake belt, on the Sea of Japan coast. Known for super-fresh fish at the Pia Bandai seafood market, the Ponshukan tasting hall (five tokens buys a flight from 100+ local sakes), and a calm, unhurried feel — the quietest and easiest of our ports.`,
+   high:["Japan's rice &amp; sake belt","Pia Bandai seafood market","Ponshukan sake tasting","Bandai City riverfront"],
+   plan:`A gentle one — shuttle into Bandai City for a fresh sushi lunch and a relaxed sake tasting. A good day to take it slow between two busier stretches.`,pill:["Easy day","rest"]},
+ {date:"Sep 9",dow:"Wed",type:"sea",title:"At Sea",meta:"Cruising toward Korea"},
+ {date:"Sep 10",dow:"Thu",type:"port",img:"bus",title:"Busan",meta:"South Korea · 7:00am – 4:00pm",
+   about:`South Korea's lively second city and biggest port — a complete change of scene and our only non-Japanese stop. Famous for the sprawling Jagalchi fish market, the colourful Gamcheon hillside village, ocean-side temples, and seriously good Korean food.`,
+   high:["Jagalchi fish market","Gamcheon hillside village","Sizzling Korean BBQ","A whole different flavour"],
+   plan:`Our own flat, central day by taxi — Jagalchi market, a wander through Nampo-dong, and a proper sit-down Korean lunch. (Passports needed to step ashore — but no visa required.)`,pill:["Our own day","diy"]},
+ {date:"Sep 11",dow:"Fri",type:"port",img:"nag",title:"Nagasaki",meta:"Kyushu · 7:00am – 4:00pm",
+   about:`Japan's window to the West for over 200 years, and a place of deep history. The Peace Park and Atomic Bomb Museum sit north of town; the Dejima Dutch trading post, hillside Glover Garden and a lively Chinatown are all near the pier. Walkable, English-friendly and quietly moving.`,
+   high:["Atomic Bomb Museum &amp; Peace Park","Dejima Dutch trading post","Glover Garden harbour views","Birthplace of champon noodles"],
+   plan:`A meaningful, walkable day: the step-free Atomic Bomb Museum and Hypocenter Park first, then champon for lunch at Shikairō with harbour views, and a gentle stroll by Dejima.`,pill:["Our own day","diy"]},
+ {date:"Sep 12",dow:"Sat",type:"port",img:"kag",booked:true,tour:`Highlights of Kagoshima — a ferry across to the Sakurajima volcano for crater views, then the Sengan-en garden. Booked for all four of us.`,title:"Kagoshima",meta:"Kyushu · 7:00am – 4:00pm",
+   about:`Often called "the Naples of Japan" — the live Sakurajima volcano broods across the bay, puffing ash most days. Add the elegant Sengan-en garden (a former lordly estate), an arcade of shops and famous black-pork cuisine, and it's one of the most dramatic stops on the loop.`,
+   high:["Sakurajima — a live volcano across the bay","Sengan-en lordly garden","Ferry across Kinko Bay","\"The Naples of Japan\""],
+   plan:`A tour we're all doing together — ferry across to the Sakurajima volcano for crater views, then the beautiful Sengan-en garden with the volcano as its backdrop.`,pill:["Booked together","book"]},
+ {date:"Sep 13",dow:"Sun",type:"port",img:"koc",title:"Kochi",meta:"Shikoku · 9:00am – 5:00pm",
+   about:`Off the tourist trail on Shikoku's south coast — home to one of only twelve original-timber castles left in Japan and the buzzing Hirome market, a covered food-market hall where seared bonito tataki and a cold beer are the local ritual. Authentic, friendly and unhurried.`,
+   high:["Original-timber Kochi Castle","Hirome covered food market","Bonito tataki &amp; cold beer","Off-the-trail, authentic Japan"],
+   plan:`A relaxed half-day — into town for the castle grounds and seared bonito tataki at the lively Hirome market. No rush, just a taste of small-city Japan.`,pill:["Easy day","rest"]},
+ {date:"Sep 14",dow:"Mon",type:"port",img:"shi",pos:"center 32%",booked:true,tour:`Sunpu Castle Park, Sengen Shrine and the Miho-no-Matsubara pine grove with Mt Fuji across the bay. Booked for all four of us.`,title:"Shimizu · for Mt Fuji",meta:"Suruga Bay · 1:00pm – 7:00pm",
+   about:`The gateway to Mt Fuji. The Miho-no-Matsubara pine grove frames Japan's most famous peak across Suruga Bay — a view so iconic it's part of Fuji's UNESCO listing — with Sunpu Castle and Sengen Shrine nearby. Fuji hides behind cloud most of September, but the pine grove is magic either way.`,
+   high:["Miho-no-Matsubara pine grove","Mt Fuji views (weather willing!)","Sunpu Castle Park","Shizuoka Sengen Shrine"],
+   plan:`Our second tour together — Sunpu Castle, Sengen Shrine and the famous Miho-no-Matsubara pine grove with Mt Fuji across the bay. September Fuji is shy, so fingers crossed for a clear day!`,pill:["Booked together","book"]},
+ {date:"Sep 15",dow:"Tue",type:"travel",title:"Disembark · Yokohama",meta:"Ashore 6:30am · fly home that night"},
+ {date:"Sep 16",dow:"Wed",type:"travel",title:"Home to Perth",meta:"Arrive midday — back to reality"}
+];
+
+const RESTAURANTS=[
+ {ic:"🍷",ty:"Our home table",name:"Vivaldi Dining Room",desc:"Complimentary main dining, international menu. Our standing 6:30pm table for the four of us, every night."},
+ {ic:"🍣",ty:"Specialty · Japanese",name:"Kai Sushi by Makoto",desc:"Edomae sushi, sashimi and wagyu — unique to the Diamond Princess. Books out fast, so we'll grab this one early."},
+ {ic:"🥩",ty:"Specialty · Steakhouse",name:"Crown Grill",desc:"Premium chargrilled steaks and seafood — the special-occasion night."},
+ {ic:"🍝",ty:"Specialty · Italian",name:"Sabatini's Trattoria",desc:"Multi-course Italian, long and leisurely. A lovely change of pace."},
+ {ic:"🍜",ty:"Casual · anytime",name:"World Fresh Marketplace",desc:"The buffet — everything from breakfast to late-night, with Japanese touches on this sailing."},
+ {ic:"♨️",ty:"Onboard experience",name:"Izumi Japanese Bath",desc:"The largest Japanese bath at sea — a proper onsen-style soak. A Diamond Princess signature."}
+];
+
+const CHECK=[
+ {b:"Passports valid 6+ months",s:"Must be valid well beyond mid-September."},
+ {b:"Travel insurance with cruise cover",s:"Make sure it covers cruising, medical &amp; evacuation."},
+ {b:"Online check-in on the Princess app",s:"Do this before we sail — it speeds up boarding."},
+ {b:"Visit Japan Web",s:"Pre-register for faster arrival at the airport."},
+ {b:"Download the Princess Cruises app",s:"Dining, our Medallion, and the daily programme live here."},
+ {b:"Pack adapters &amp; sort mobile data",s:"Japan plugs differ from home; an eSIM keeps us online."}
+];
+
+const tl=document.getElementById('timeline');
+DAYS.forEach(d=>{
+  const isPort=d.type==='port';
+  const el=document.createElement('div');
+  el.className='day '+d.type; el.dataset.type=d.type;
+  const [dMon,dNum]=d.date.split(' ');
+  const tag=d.type==='port'?'<span class="tag port">Port</span>':d.type==='sea'?'<span class="tag sea">At sea</span>':'<span class="tag travel">Travel</span>';
+  const banner=d.img?`<div class="banner"><img class="pimg" src="${IMG[d.img]}" alt="${d.title}" loading="lazy"${d.pos?` style="object-position:${d.pos}"`:''}><span class="bname">${d.title}</span><span class="bmeta">${d.meta}</span>${d.booked?`<span class="badge" tabindex="0">★ Tour booked<span class="tip">${d.tour}</span></span>`:''}</div>`:'';
+  let inner='';
+  if(isPort){
+    const highs=d.high.map(h=>`<span class="chip">${h}</span>`).join('');
+    const pillCls=d.pill?d.pill[1]:'',pillTxt=d.pill?d.pill[0]:'';
+    inner=`<div class="body"><div class="bodyinner">
+      ${d.about?`<div class="blk about"><p>${d.about}</p></div>`:''}
+      <div class="blk high"><h4>Highlights</h4><div class="chips">${highs}</div></div>
+      <div class="blk plan"><h4>Our plan</h4><p>${d.plan}</p>${pillTxt?`<span class="pill ${pillCls}">${pillTxt}</span>`:''}</div>
+    </div></div>`;
+  }
+  el.innerHTML=`<div class="card">${banner}
+    <div class="chead">
+      <div class="dot-date"><b>${dNum}</b><span>${dMon} · ${d.dow}</span></div>
+      <div class="ctitle"><h3>${d.title}</h3><div class="meta">${d.meta}</div></div>
+      ${tag}${isPort?'<div class="chev">⌄</div>':''}
+    </div>${inner}</div>`;
+  if(isPort){
+    const toggle=()=>el.classList.toggle('open');
+    el.querySelector('.chead').addEventListener('click',toggle);
+    const b=el.querySelector('.banner'); if(b) b.addEventListener('click',toggle);
+  }
+  tl.appendChild(el);
+});
+
+document.querySelectorAll('.filters button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const f=btn.dataset.f;
+    document.querySelectorAll('.day').forEach(day=>{
+      const t=day.dataset.type;
+      day.style.display=(f==='all'||(f==='port'&&t==='port')||(f==='other'&&t!=='port'))?'':'none';
+    });
+  });
+});
+
+const rg=document.getElementById('rest');
+RESTAURANTS.forEach(r=>{const c=document.createElement('div');c.className='r reveal';c.innerHTML=`<div class="ic">${r.ic}</div><div class="ty">${r.ty}</div><h4>${r.name}</h4><p>${r.desc}</p>`;rg.appendChild(c);});
+
+const cg=document.getElementById('check');
+const saved=JSON.parse(localStorage.getItem('jp26check')||'{}');
+CHECK.forEach((c,i)=>{
+  const lab=document.createElement('label');lab.className='ci reveal'+(saved[i]?' done':'');
+  lab.innerHTML=`<input type="checkbox" ${saved[i]?'checked':''}><div><b>${c.b}</b><span>${c.s}</span></div>`;
+  const box=lab.querySelector('input');
+  box.addEventListener('change',()=>{lab.classList.toggle('done',box.checked);saved[i]=box.checked;localStorage.setItem('jp26check',JSON.stringify(saved));});
+  cg.appendChild(lab);
+});
+
+const target=new Date(2026,8,2,16,55,0);
+function tick(){
+  const diff=target-new Date();
+  const set=(id,v)=>document.getElementById(id).textContent=v<10?'0'+v:v;
+  if(diff<=0){document.getElementById('cd').innerHTML='<div class="cd"><b>🎉</b><span>We\'re off!</span></div>';return;}
+  document.getElementById('d').textContent=Math.floor(diff/86400000);
+  set('h',Math.floor(diff/3600000)%24);set('m',Math.floor(diff/60000)%60);set('s',Math.floor(diff/1000)%60);
+}
+tick();setInterval(tick,1000);
+
+const root=document.documentElement,bb=document.getElementById('bigBtn');
+let big=localStorage.getItem('jp26big')==='1';
+function applyBig(){root.style.setProperty('--fs',big?'1.22':'1');bb.textContent=big?'A− Normal text':'A+ Bigger text';}
+applyBig();bb.addEventListener('click',()=>{big=!big;localStorage.setItem('jp26big',big?'1':'0');applyBig();});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
