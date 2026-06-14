@@ -28,6 +28,8 @@
   nav a:hover{opacity:1;color:#fff}
   .a11y{background:var(--gold);color:#16243f;border:none;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:calc(13px*var(--fs))}
   .a11y:active{transform:scale(.96)}
+  .navactions{display:flex;align-items:center;gap:10px}
+  .navtoggle{display:none;background:none;border:none;color:#fff;font-size:calc(22px*var(--fs));cursor:pointer;line-height:1}
 
   header.hero{position:relative;color:#fff;text-align:center;padding:96px 22px 120px;
     background:linear-gradient(rgba(15,24,48,.58),rgba(13,22,44,.86)),
@@ -54,6 +56,11 @@
   body.contrast .fact{border:1px solid #ccc}
   .fact b{display:block;font-family:var(--serif);font-size:calc(30px*var(--fs));color:var(--indigo)}
   .fact span{font-size:calc(13px*var(--fs));color:var(--muted)}
+  .mapwrap{max-width:640px;margin:0 auto}
+  .mapinner{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 12px 34px rgba(22,36,63,.16)}
+  .basemap{display:block;width:100%;height:auto}
+  .mapoverlay{position:absolute;inset:0;width:100%;height:100%}
+  .maplegend{text-align:center;margin-top:12px;font-size:calc(12.5px*var(--fs));color:var(--muted)}
 
   .filters{display:flex;gap:10px;justify-content:center;margin-bottom:30px;flex-wrap:wrap}
   .filters button{border:1px solid var(--indigo2);background:transparent;color:var(--indigo2);padding:8px 18px;border-radius:999px;cursor:pointer;font-size:calc(14px*var(--fs));font-weight:600}
@@ -68,7 +75,7 @@
   body.contrast .card{border:1px solid #ccc}
   .banner{position:relative;line-height:0;cursor:pointer;background:var(--indigo)}
   .pimg{width:100%;height:210px;object-fit:cover;display:block}
-  .banner:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(13,22,44,.82),rgba(13,22,44,.06) 55%,rgba(13,22,44,.18));pointer-events:none}
+  .banner:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(13,22,44,.30),transparent 42%);pointer-events:none}
   .banner .bname{position:absolute;left:18px;bottom:12px;z-index:2;color:#fff;font-family:var(--serif);font-size:calc(30px*var(--fs));text-shadow:0 2px 12px rgba(0,0,0,.6);letter-spacing:.02em}
   .banner .bmeta{position:absolute;right:18px;bottom:16px;z-index:2;color:#f0e4c6;font-size:calc(12px*var(--fs));letter-spacing:.08em;text-shadow:0 2px 8px rgba(0,0,0,.6)}
   .badge{position:absolute;top:12px;right:12px;z-index:4;background:var(--gold);color:#16243f;font-weight:700;font-size:calc(11px*var(--fs));letter-spacing:.05em;padding:6px 12px;border-radius:999px;box-shadow:0 2px 12px rgba(0,0,0,.4);cursor:help}
@@ -125,15 +132,21 @@
 
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
   .reveal.in{opacity:1;transform:none}
-  @media(max-width:760px){.facts{grid-template-columns:repeat(2,1fr)}.rgrid{grid-template-columns:1fr}.check{grid-template-columns:1fr}nav .links{display:none}.pimg{height:180px}}
+  @media(max-width:760px){.facts{grid-template-columns:repeat(2,1fr)}.rgrid{grid-template-columns:1fr}.check{grid-template-columns:1fr}.pimg{height:180px}.navtoggle{display:block}
+    nav .links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:rgba(22,36,63,.98);padding:6px 0;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+    nav .links.open{display:flex}
+    nav .links a{padding:13px 22px;font-size:calc(15px*var(--fs));opacity:.95}}
 </style>
 </head>
 <body>
 
 <nav>
   <div class="brand">日本 <b>Japan 2026</b></div>
-  <div class="links"><a href="#voyage">Voyage</a><a href="#itinerary">Itinerary</a><a href="#dining">Dining</a><a href="#ready">Before We Go</a></div>
-  <button class="a11y" id="bigBtn">A+ Bigger text</button>
+  <div class="links" id="navLinks"><a href="#voyage">Voyage</a><a href="#route">Route</a><a href="#itinerary">Itinerary</a><a href="#dining">Dining</a><a href="#ready">Before We Go</a></div>
+  <div class="navactions">
+    <button class="a11y" id="bigBtn">A+ Bigger text</button>
+    <button class="navtoggle" id="navToggle" aria-label="Menu" aria-expanded="false">☰</button>
+  </div>
 </nav>
 
 <header class="hero">
@@ -157,6 +170,59 @@
     <div class="facts">
       <div class="fact"><b>10</b><span>nights at sea</span></div><div class="fact"><b>7</b><span>ports of call</span></div>
       <div class="fact"><b>2</b><span>countries</span></div><div class="fact"><b>4</b><span>of us</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="route">
+  <div class="wrap">
+    <div class="eyebrow reveal">The Big Picture</div>
+    <h2 class="stitle reveal">Our Loop Around Japan</h2>
+    <div class="rule reveal"></div>
+    <p class="lead reveal">Ten nights in a big anti-clockwise loop from Tokyo — north to Hokkaido, west across to Korea, then down through Kyushu and Shikoku and back past Mt Fuji. The numbers show the order we visit.</p>
+    <div class="mapwrap reveal">
+      <div class="mapinner">
+        <img class="basemap" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Japan-Korea_adm_location_map.svg/960px-Japan-Korea_adm_location_map.svg.png" alt="Map of Japan and South Korea" loading="lazy">
+        <svg class="mapoverlay" viewBox="0 0 506 469" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs></defs>
+          <g font-family="-apple-system,Segoe UI,Arial,sans-serif" fill="#5b7da0" opacity="0.85" font-size="11" letter-spacing="2">
+            <text x="208" y="150" text-anchor="middle">SEA OF JAPAN</text>
+            <text x="410" y="360" text-anchor="middle">PACIFIC OCEAN</text>
+          </g>
+          <g stroke="#c8442f" stroke-width="2" stroke-dasharray="5 4" fill="none" stroke-linecap="round">
+            <path d="M311 244 C360 210 360 140 332 95"/>
+            <path d="M332 95 C300 120 285 150 299 186"/>
+            <path d="M299 186 C240 150 140 200 103 250"/>
+            <path d="M103 250 C95 275 105 295 119 307"/>
+            <path d="M119 307 C95 315 100 332 132 334"/>
+            <path d="M132 334 C150 360 185 330 191 288"/>
+            <path d="M191 288 C215 315 265 300 288 254"/>
+            <path d="M288 254 C295 266 305 262 311 244"/>
+          </g>
+          <g font-family="-apple-system,Segoe UI,Arial,sans-serif" font-size="12.5" font-weight="700" style="paint-order:stroke;stroke:#ffffff;stroke-width:3;stroke-linejoin:round" fill="#16243f">
+            <text x="323" y="242" text-anchor="start">Yokohama</text>
+            <text x="344" y="97" text-anchor="start">Hakodate</text>
+            <text x="288" y="182" text-anchor="end">Niigata</text>
+            <text x="103" y="273" text-anchor="middle">Busan · Korea</text>
+            <text x="107" y="305" text-anchor="end">Nagasaki</text>
+            <text x="132" y="353" text-anchor="middle">Kagoshima</text>
+            <text x="191" y="307" text-anchor="middle">Kochi</text>
+            <text x="300" y="273" text-anchor="middle">Shimizu · Mt Fuji</text>
+          </g>
+          <g font-family="-apple-system,Segoe UI,Arial,sans-serif" font-size="10.5" font-weight="800" text-anchor="middle">
+            <g><circle cx="311" cy="244" r="10" fill="#c8442f" stroke="#fff" stroke-width="2"/><text x="311" y="247.7" fill="#fff">1</text></g>
+            <g><circle cx="332" cy="95" r="9" fill="#d8b15a" stroke="#fff" stroke-width="2"/><text x="332" y="98.6" fill="#16243f">2</text></g>
+            <g><circle cx="299" cy="186" r="9" fill="#d8b15a" stroke="#fff" stroke-width="2"/><text x="299" y="189.6" fill="#16243f">3</text></g>
+            <g><circle cx="103" cy="250" r="9" fill="#d8b15a" stroke="#fff" stroke-width="2"/><text x="103" y="253.6" fill="#16243f">4</text></g>
+            <g><circle cx="119" cy="307" r="9" fill="#d8b15a" stroke="#fff" stroke-width="2"/><text x="119" y="310.6" fill="#16243f">5</text></g>
+            <g><circle cx="132" cy="334" r="9" fill="#d8b15a" stroke="#fff" stroke-width="2"/><text x="132" y="337.6" fill="#16243f">6</text></g>
+            <g><circle cx="191" cy="288" r="9" fill="#d8b15a" stroke="#fff" stroke-width="2"/><text x="191" y="291.6" fill="#16243f">7</text></g>
+            <g><circle cx="288" cy="254" r="9" fill="#d8b15a" stroke="#fff" stroke-width="2"/><text x="288" y="257.6" fill="#16243f">8</text></g>
+          </g>
+          <g><path d="M28 30 L22 46 L28 41 L34 46 Z" fill="#c8442f"/><text x="28" y="60" text-anchor="middle" font-family="-apple-system,Segoe UI,Arial,sans-serif" font-size="11" font-weight="700" fill="#16243f" style="paint-order:stroke;stroke:#fff;stroke-width:2.5">N</text></g>
+        </svg>
+      </div>
+      <p class="maplegend">① Yokohama = start &amp; finish · the numbers show the order we visit</p>
     </div>
   </div>
 </section>
@@ -201,7 +267,7 @@
   <div class="torii">⛩️</div>
   <p>See you on board, September 2026.</p>
   <div class="sig">いってきます — Let's go!</div>
-  <p class="credit">Port photographs from <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a>, used under their respective Creative Commons licences.</p>
+  <p class="credit">Port photographs and base map from <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (map © NordNordWest), used under their respective Creative Commons licences.</p>
 </footer>
 
 <script>
@@ -283,7 +349,7 @@ DAYS.forEach(d=>{
   el.className='day '+d.type; el.dataset.type=d.type;
   const [dMon,dNum]=d.date.split(' ');
   const tag=d.type==='port'?'<span class="tag port">Port</span>':d.type==='sea'?'<span class="tag sea">At sea</span>':'<span class="tag travel">Travel</span>';
-  const banner=d.img?`<div class="banner"><img class="pimg" src="${IMG[d.img]}" alt="${d.title}" loading="lazy"${d.pos?` style="object-position:${d.pos}"`:''}><span class="bname">${d.title}</span><span class="bmeta">${d.meta}</span>${d.booked?`<span class="badge" tabindex="0">★ Tour booked<span class="tip">${d.tour}</span></span>`:''}</div>`:'';
+  const banner=d.img?`<div class="banner"><img class="pimg" src="${IMG[d.img]}" alt="${d.title}" loading="lazy"${d.pos?` style="object-position:${d.pos}"`:''}>${d.booked?`<span class="badge" tabindex="0">★ Tour booked<span class="tip">${d.tour}</span></span>`:''}</div>`:'';
   let inner='';
   if(isPort){
     const highs=d.high.map(h=>`<span class="chip">${h}</span>`).join('');
@@ -347,6 +413,10 @@ const root=document.documentElement,bb=document.getElementById('bigBtn');
 let big=localStorage.getItem('jp26big')==='1';
 function applyBig(){root.style.setProperty('--fs',big?'1.22':'1');bb.textContent=big?'A− Normal text':'A+ Bigger text';}
 applyBig();bb.addEventListener('click',()=>{big=!big;localStorage.setItem('jp26big',big?'1':'0');applyBig();});
+
+const navLinks=document.getElementById('navLinks'),navToggle=document.getElementById('navToggle');
+navToggle.addEventListener('click',()=>{const o=navLinks.classList.toggle('open');navToggle.setAttribute('aria-expanded',o);});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
 
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
