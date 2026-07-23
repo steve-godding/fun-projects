@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fun Projects</title>
+<meta name="description" content="A small collection of pages and mini-sites.">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --bg-grad-1: #eef2ff;
+    --bg-grad-2: #f6f7f9;
+    --card: #ffffff;
+    --card-border: #e5e7eb;
+    --text: #1f2430;
+    --muted: #6b7280;
+    --accent: #4f46e5;
+    --shadow: 0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.06);
+    --shadow-hover: 0 2px 4px rgba(16,24,40,.08), 0 16px 40px rgba(79,70,229,.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1016;
+      --bg-grad-1: #171a2b;
+      --bg-grad-2: #0e1016;
+      --card: #171a22;
+      --card-border: #262b36;
+      --text: #e8eaed;
+      --muted: #9aa2b1;
+      --accent: #8b83ff;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+      --shadow-hover: 0 2px 4px rgba(0,0,0,.5), 0 16px 40px rgba(0,0,0,.5);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: radial-gradient(1200px 600px at 50% -10%, var(--bg-grad-1), var(--bg-grad-2)) fixed;
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 72px 24px 96px; }
+  header { margin-bottom: 40px; }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .tagline { color: var(--muted); font-size: 1.05rem; margin: 0; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 22px 22px 20px;
+    box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .card:hover, .card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
+    outline: none;
+  }
+  .emoji { font-size: 2rem; line-height: 1; margin-bottom: 14px; }
+  .card h2 { font-size: 1.2rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+  .go {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card:hover .go .arrow { transform: translateX(3px); }
+  .arrow { transition: transform .18s ease; }
+
+  footer {
+    margin-top: 56px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Fun&nbsp;Projects</h1>
+      <p class="tagline">A collection of pages and mini-sites.</p>
+    </header>
+
+    <main class="grid">
+      <!-- ==========================================================
+           To add a page: copy one <a class="card"> block below,
+           change the href (folder name), emoji, title and blurb.
+           Keep the folder name matching the actual directory.
+           ========================================================== -->
+
+      <a class="card" href="japan-2026/">
+        <div class="emoji">🚢</div>
+        <h2>Japan 2026 · Our Cruise</h2>
+        <p>Itinerary and details for our 2026 Japan cruise.</p>
+        <span class="go">Open <span class="arrow">→</span></span>
+      </a>
+
+      <a class="card" href="tokyo-days/">
+        <div class="emoji">🗼</div>
+        <h2>Tokyo · Our Days in the City</h2>
+        <p>Plans for our days in Tokyo, September 2026.</p>
+        <span class="go">Open <span class="arrow">→</span></span>
+      </a>
+
+      <a class="card" href="kims-birthday/">
+        <div class="emoji">🎂</div>
+        <h2>Happy Birthday Kim</h2>
+        <p>A little birthday page for Kim.</p>
+        <span class="go">Open <span class="arrow">→</span></span>
+      </a>
+
+    </main>
+
+    <footer>
+      Hosted on <a href="https://github.com/steve-godding/fun-projects">GitHub&nbsp;Pages</a>.
+    </footer>
+  </div>
+</body>
+</html>
