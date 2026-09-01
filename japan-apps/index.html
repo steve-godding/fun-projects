@@ -1,0 +1,270 @@
+<title>Japan Trip App Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f2f3f6; --surface:#ffffff; --surface-2:#e9ebf1;
+  --ink:#171a21; --muted:#5c6474; --line:#d8dbe4;
+  --accent:#2c3e8f; --accent-ink:#ffffff; --accent-soft:#e4e8f8;
+  --urgent:#b4472e; --urgent-soft:#f7e6e1;
+  --done:#4a7c59;
+  --display:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#12141a; --surface:#191c24; --surface-2:#222633;
+    --ink:#e6e8ee; --muted:#98a0b3; --line:#2c3140;
+    --accent:#8fa4ff; --accent-ink:#101320; --accent-soft:#232941;
+    --urgent:#e0906f; --urgent-soft:#33231d;
+    --done:#7fb08c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12141a; --surface:#191c24; --surface-2:#222633;
+  --ink:#e6e8ee; --muted:#98a0b3; --line:#2c3140;
+  --accent:#8fa4ff; --accent-ink:#101320; --accent-soft:#232941;
+  --urgent:#e0906f; --urgent-soft:#33231d;
+  --done:#7fb08c;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);
+  line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:44rem;margin:0 auto;padding:2.25rem 1.15rem 4rem;
+  display:flex;flex-direction:column;gap:2.25rem}
+
+header{display:flex;flex-direction:column;gap:.85rem}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.85rem,6vw,2.6rem);
+  line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.standfirst{margin:0;color:var(--muted);font-size:1rem;max-width:34rem}
+
+.legs{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);border-radius:.4rem;overflow:hidden}
+.leg{background:var(--surface);padding:.7rem .8rem;display:flex;flex-direction:column;gap:.15rem}
+.leg dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+.leg dd{margin:0;font-size:.9rem;font-weight:500;font-variant-numeric:tabular-nums}
+
+.tier{display:flex;flex-direction:column;gap:.15rem}
+.tier-head{display:flex;flex-direction:column;gap:.3rem;padding-bottom:.7rem;
+  border-bottom:2px solid var(--ink)}
+.tier-when{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent)}
+.tier-1 .tier-when{color:var(--urgent)}
+.tier-head h2{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
+.tier-note{margin:0;font-size:.86rem;color:var(--muted)}
+
+ul.apps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+li.app{display:grid;grid-template-columns:auto 1fr;gap:.1rem .75rem;
+  padding:.95rem .15rem;border-bottom:1px solid var(--line);align-items:start}
+li.app:last-child{border-bottom:none}
+li.app{position:relative}
+li.app:has(a.name):active{background:var(--surface-2)}
+@media (hover:hover){li.app:has(a.name):hover{background:var(--surface-2)}}
+
+.tick{grid-row:1/span 3;appearance:none;-webkit-appearance:none;margin:.18rem 0 0;
+  width:1.25rem;height:1.25rem;border:1.5px solid var(--muted);border-radius:.25rem;
+  background:var(--surface);cursor:pointer;flex:none;position:relative;z-index:2}
+.tick:checked{background:var(--done);border-color:var(--done)}
+.tick:checked::after{content:"";position:absolute;left:.4rem;top:.16rem;
+  width:.3rem;height:.6rem;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(43deg)}
+.tick:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.line1{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem}
+.name{font-weight:600;font-size:1.02rem}
+a.name{color:var(--ink);text-decoration:none;
+  border-bottom:1.5px solid var(--accent);padding-bottom:1px}
+.line1 > a.name::after{content:"";position:absolute;inset:0;z-index:1}
+.why a.name{position:relative;z-index:2}
+a.name:hover,a.name:focus-visible{color:var(--accent)}
+.devs{font-family:var(--mono);font-size:.68rem;letter-spacing:.05em;color:var(--muted);
+  white-space:nowrap}
+.why{margin:.15rem 0 0;font-size:.88rem;color:var(--muted);max-width:34rem}
+.why b{color:var(--ink);font-weight:500}
+.date{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+li.app.done .name,li.app.done .why{opacity:.45}
+
+.callout{background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--accent);border-radius:.3rem;padding:1rem 1.1rem;
+  display:flex;flex-direction:column;gap:.4rem}
+.callout h3{font-family:var(--display);font-size:1rem;margin:0}
+.callout p{margin:0;font-size:.88rem;color:var(--muted)}
+.callout.mac{border-left-color:var(--muted)}
+code{font-family:var(--mono);font-size:.85em;background:var(--surface-2);
+  padding:.1rem .3rem;border-radius:.2rem}
+
+footer{border-top:1px solid var(--line);padding-top:1rem;font-size:.8rem;color:var(--muted)}
+footer p{margin:0 0 .4rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">Circle Japan · Diamond Princess · 2–16 Sep 2026</p>
+  <h1>Japan Trip App Kit</h1>
+  <p class="standfirst">Every install worth doing, ordered by when to do it. Tap anywhere on a row to open it in the Australian App Store. Ticks are saved on this device, so the iPhone and the iPad each keep their own list.</p>
+  <dl class="legs">
+    <div class="leg"><dt>Depart PER</dt><dd>2 Sep · SQ214</dd></div>
+    <div class="leg"><dt>Land NRT</dt><dd>3 Sep · 08:00</dd></div>
+    <div class="leg"><dt>Board Yokohama</dt><dd>5 Sep</dd></div>
+    <div class="leg"><dt>Busan, Korea</dt><dd>10 Sep</dd></div>
+    <div class="leg"><dt>Depart HND</dt><dd>15 Sep · 22:55</dd></div>
+  </dl>
+</header>
+
+<section class="tier tier-1">
+  <div class="tier-head">
+    <span class="tier-when">Before you board tonight</span>
+    <h2>On home WiFi, while you still have it</h2>
+    <p class="tier-note">These six need a download <em>inside</em> the app after installing. Doing them in the air or on hotel WiFi is slower and, for the offline packs, painful.</p>
+  </div>
+  <ul class="apps">
+    <li class="app">
+      <input class="tick" type="checkbox" id="a1" aria-label="Google Translate installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/google-translate/id414706506">Google Translate</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">The one app you will actually use. Open it and download the <b>Japanese and Korean offline packs now</b> — camera translation of menus and signs then works with no signal at all.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="a2" aria-label="Google Maps installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/google-maps/id585027354">Google Maps</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Best transit router in Japan, down to the platform and transfer. <b>Steve already has the Tokyo and Yokohama offline area downloaded</b>, so nobody needs to repeat it — offline maps are per-device, so only bother on your own phone if you want maps working when you are off on your own with no signal.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="a3" aria-label="Princess Cruises installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/princess-cruises/id6469049279">Princess Cruises</a><span class="devs">iPhone only</span></div>
+      <p class="why">Medallion, boarding pass, excursions and the pre-cruise notices. Watch it for how Princess handles <b>Busan immigration on <span class="date">10 Sep</span></b>. No iPad version exists.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="a4" aria-label="Suica added to Wallet">
+      <div class="line1"><span class="name">Suica in Apple Wallet</span><span class="devs">iPhone · Watch</span></div>
+      <p class="why">Not an App Store download. <b>Wallet → + → Transit Card → Suica</b>, then top up ¥5,000 with Apple Pay. Tap to ride trains and buses and to pay at any convenience store. Set it up on all four phones.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="a5" aria-label="TripIt installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/tripit-travel-planner/id311035142">TripIt</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Holds flights, hotel and cruise in one offline itinerary. Already on your Mac, so sign in on the phone and it syncs.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="a6" aria-label="Safety tips installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/safety-tips/id858357174">Safety tips</a><span class="devs">iPhone only</span></div>
+      <p class="why">Japan's official English-language earthquake, tsunami and typhoon alert app, built for visitors. <b>September is peak typhoon season</b> and you are at sea for ten days of it.</p>
+    </li>
+  </ul>
+</section>
+
+<div class="callout">
+  <h3>Also do these before the airport</h3>
+  <p>Load <b>Visit Japan Web</b> in Safari and check both QR codes render — they must be pulled live, a screenshot is no longer accepted at the kiosk. Download whatever you plan to watch or read on the <span class="date">11-hour</span> Perth–Singapore–Narita run, because Singapore Airlines WiFi will not carry it.</p>
+</div>
+
+<section class="tier">
+  <div class="tier-head">
+    <span class="tier-when">Hotel WiFi, 3–4 Sep</span>
+    <h2>Once you are on the ground</h2>
+    <p class="tier-note">None of these need pre-loading. Install them at the Shiba Park Hotel over breakfast.</p>
+  </div>
+  <ul class="apps">
+    <li class="app">
+      <input class="tick" type="checkbox" id="b1" aria-label="ecbo cloak installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/ecbo-cloak-luggage-storage/id1443707795">ecbo cloak</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Books luggage storage in shops and stations by the hour. This is the fix for arrival day — you land at <span class="date">08:00</span> and cannot check in until <span class="date">15:00</span>, and nobody wants to drag cases around Shibakoen for seven hours.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="b2" aria-label="GO taxi installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/go-taxi-app-for-japan-visit/id1254341709">GO</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Japan's taxi-hailing app, in English, card on file so there is no fare conversation. Worth having for the days when <b>walking the last kilometre is not on</b> — it turns a long slog into a two-minute ride.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="b3" aria-label="Japan Travel by NAVITIME installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/japan-travel-smart-transit/id686373726">Japan Travel by NAVITIME</a><span class="devs">iPhone only</span></div>
+      <p class="why">Transit specialist that compares IC-card and rail-pass fares properly, which Google Maps does not. For the iPad, <a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/japan-transit-planner/id299490481" style="font-weight:500;font-size:.88rem">Jorudan Japan Transit Planner</a> does the same job.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="b4" aria-label="Papago installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/naver-papago-ai-translator/id1147874819">Naver Papago</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Korea's own translator, noticeably better than Google on Korean. One app for one day — <b>Busan, <span class="date">10 Sep</span></b>.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="b5" aria-label="VoiceTra installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/voicetra/id581137577">VoiceTra</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Built by Japan's national research institute for spoken Japanese. It shows you the <b>back-translation</b>, so you can see whether it understood you before the other person has to. Needs a connection.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="b6" aria-label="Windy installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/windy-com-weather-radar/id1161387262">Windy.com</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Typhoon tracks and swell forecasts. Better than Apple Weather for the question you will actually be asking at sea, which is whether the ship still calls at the next port.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="b7" aria-label="Tabelog installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/tabelog-food-guide-in-japan/id6752922875">Tabelog</a><span class="devs">iPhone only</span></div>
+      <p class="why">The local restaurant scoring standard. Anything above 3.5 is genuinely good — Japanese reviewers mark hard, so do not read it as a five-star scale.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="b8" aria-label="Xe installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/xe-money-transfer-currency/id315241195">Xe Currency</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Caches the rate so it converts offline. Optional — Siri and the Calculator app will do it too.</p>
+    </li>
+  </ul>
+</section>
+
+<section class="tier">
+  <div class="tier-head">
+    <span class="tier-when">Flight and sea days</span>
+    <h2>Mostly the iPad's job</h2>
+    <p class="tier-note">Ten nights aboard, five of them with a sea day either side. Download the content, not just the app.</p>
+  </div>
+  <ul class="apps">
+    <li class="app">
+      <input class="tick" type="checkbox" id="c1" aria-label="Kindle installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/amazon-kindle-reading-app/id302584613">Amazon Kindle</a><span class="devs">iPhone · iPad · Mac</span></div>
+      <p class="why">Already on your Mac. Sync the library to the iPad <b>before you fly</b>; ship WiFi is metered and slow.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="c2" aria-label="Audible installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/audible-audiobooks-podcasts/id379693831">Audible</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Download the titles, not just the app. Good for the Singapore leg and for shore days where you are waiting around.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="c3" aria-label="Netflix downloads done">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/netflix/id363590051">Netflix</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Downloads expire and are region-locked, so <b>queue them tonight in Perth</b>. Streaming from the ship is not realistic.</p>
+    </li>
+    <li class="app">
+      <input class="tick" type="checkbox" id="c4" aria-label="LINE installed">
+      <div class="line1"><a class="name" target="_blank" rel="noopener" href="https://apps.apple.com/au/app/line/id443904275">LINE</a><span class="devs">iPhone · iPad</span></div>
+      <p class="why">Japan's default messenger. Only worth it if a tour operator or restaurant asks for it — otherwise skip.</p>
+    </li>
+  </ul>
+</section>
+
+<div class="callout mac">
+  <h3>Your Mac needs nothing</h3>
+  <p>Checked against the Mac App Store: Google Translate, Google Maps, Papago, Princess and Organic Maps have no Mac build at all, and Kindle, Flighty, TripIt, 1Password, Obsidian and ExpressVPN are already installed. There is no Mac install to do before you leave.</p>
+</div>
+
+<footer>
+  <p>Every link points at a verified Australian App Store listing. All apps listed are free to install.</p>
+  <p>Device availability shown is what the App Store actually reports, so "iPhone only" means there is no iPad build, not that it is untested.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  var boxes=document.querySelectorAll(".tick");
+  var KEY="japan-apps-v1";
+  var state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){state={};}
+  boxes.forEach(function(b){
+    if(state[b.id]){b.checked=true;b.closest(".app").classList.add("done");}
+    b.addEventListener("change",function(){
+      b.closest(".app").classList.toggle("done",b.checked);
+      state[b.id]=b.checked;
+      try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+    });
+  });
+})();
+</script>
