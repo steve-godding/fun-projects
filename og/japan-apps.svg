@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#BC002D"/>
+  <clipPath id="c"><rect width="1200" height="630"/></clipPath>
+  <g clip-path="url(#c)">
+    <circle cx="985" cy="315" r="248" fill="#BC002D"/>
+    
+<g transform="translate(985,315)">
+  <rect x="-88" y="-134" width="176" height="268" rx="26" fill="#FFFFFF"/>
+  <g fill="#BC002D">
+    <rect x="-58" y="-92" width="118" height="12" rx="6"/>
+    <rect x="-58" y="-44" width="118" height="12" rx="6"/>
+    <rect x="-58" y="4" width="118" height="12" rx="6"/>
+    <rect x="-58" y="52" width="84" height="12" rx="6"/>
+  </g>
+  <path d="M -28 92 l 19 21 l 42 -50" fill="none" stroke="#BC002D" stroke-width="13"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+  </g>
+  <text x="76" y="212" font-family="Helvetica Neue,Helvetica,Arial" font-size="24"
+        font-weight="600" letter-spacing="3" fill="#8A8F9C">PRE-DEPARTURE CHECKLIST</text>
+  <text x="76" y="307" font-family="Helvetica Neue,Helvetica,Arial" font-size="76"
+        font-weight="700" fill="#171A21">Japan Trip</text>
+  <text x="76" y="386" font-family="Helvetica Neue,Helvetica,Arial" font-size="76"
+        font-weight="700" fill="#BC002D">App Kit</text>
+  <text x="76" y="452" font-family="Helvetica Neue,Helvetica,Arial" font-size="27"
+        fill="#5C6474">Every app worth installing, ordered by when to do it.</text>
+</svg>

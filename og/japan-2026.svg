@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#BC002D"/>
+  <clipPath id="c"><rect width="1200" height="630"/></clipPath>
+  <g clip-path="url(#c)">
+    <circle cx="985" cy="315" r="248" fill="#BC002D"/>
+    
+<g fill="#FFFFFF" transform="translate(985,315) scale(0.70) translate(-512,-470)">
+  <path d="M 448 302 Q 448 276, 476 276 L 556 276 Q 584 276, 582 302 L 588 366 L 442 366 Z"/>
+  <rect x="366" y="378" width="292" height="46" rx="20"/>
+  <path d="M 398 432 L 626 432 L 638 566 L 386 566 Z"/>
+  <path d="M 380 574 L 644 574 L 596 676 Q 512 700, 428 676 Z"/>
+</g>
+<g fill="#BC002D" transform="translate(985,315) scale(0.70) translate(-512,-470)">
+  <rect x="404" y="458" width="216" height="11" rx="5"/>
+  <rect x="401" y="490" width="222" height="11" rx="5"/>
+  <rect x="398" y="522" width="228" height="11" rx="5"/>
+</g>
+  </g>
+  <text x="76" y="212" font-family="Helvetica Neue,Helvetica,Arial" font-size="24"
+        font-weight="600" letter-spacing="3" fill="#8A8F9C">DIAMOND PRINCESS · SEPTEMBER 2026</text>
+  <text x="76" y="307" font-family="Helvetica Neue,Helvetica,Arial" font-size="76"
+        font-weight="700" fill="#171A21">Japan 2026</text>
+  <text x="76" y="386" font-family="Helvetica Neue,Helvetica,Arial" font-size="76"
+        font-weight="700" fill="#BC002D">Our Cruise</text>
+  <text x="76" y="452" font-family="Helvetica Neue,Helvetica,Arial" font-size="27"
+        fill="#5C6474">10 nights round Japan &amp; Korea — ports, dates and maps.</text>
+</svg>

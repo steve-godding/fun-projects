@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#BC002D"/>
+  <clipPath id="c"><rect width="1200" height="630"/></clipPath>
+  <g clip-path="url(#c)">
+    <circle cx="985" cy="315" r="248" fill="#BC002D"/>
+    
+<g fill="#FFFFFF" transform="translate(985,315)">
+  <path d="M -172 -96 Q 0 -128, 172 -96 L 172 -74 Q 0 -104, -172 -74 Z"/>
+  <rect x="-146" y="-66" width="292" height="20" rx="5"/>
+  <rect x="-112" y="-16" width="224" height="22" rx="6"/>
+  <rect x="-11" y="-46" width="22" height="36" rx="4"/>
+  <path d="M -100 -46 L -74 -46 L -66 140 L -108 140 Z"/>
+  <path d="M 100 -46 L 74 -46 L 66 140 L 108 140 Z"/>
+</g>
+  </g>
+  <text x="76" y="212" font-family="Helvetica Neue,Helvetica,Arial" font-size="24"
+        font-weight="600" letter-spacing="3" fill="#8A8F9C">BEFORE AND AFTER THE SHIP</text>
+  <text x="76" y="326" font-family="Helvetica Neue,Helvetica,Arial" font-size="58"
+        font-weight="700" fill="#171A21">Tokyo</text>
+  <text x="76" y="386" font-family="Helvetica Neue,Helvetica,Arial" font-size="58"
+        font-weight="700" fill="#BC002D">Our Days in the City</text>
+  <text x="76" y="452" font-family="Helvetica Neue,Helvetica,Arial" font-size="27"
+        fill="#5C6474">A suggested plan for our days either side of the cruise.</text>
+</svg>
