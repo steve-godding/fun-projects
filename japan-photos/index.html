@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Japan Photo Kit">
+<meta property="og:description" content="Managing the trip photos in Apple Photos: two minutes a night, and the right way to share them.">
+<meta property="og:url" content="https://steve-godding.github.io/fun-projects/japan-photos/">
+<meta name="description" content="Managing the trip photos in Apple Photos: two minutes a night, and the right way to share them.">
+<title>Japan Photo Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f2f3f6; --surface:#ffffff; --surface-2:#e9ebf1;
+  --ink:#171a21; --muted:#5c6474; --line:#d8dbe4;
+  --accent:#2c3e8f; --accent-ink:#ffffff; --accent-soft:#e4e8f8;
+  --urgent:#b4472e; --urgent-soft:#f7e6e1;
+  --done:#4a7c59;
+  --display:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#12141a; --surface:#191c24; --surface-2:#222633;
+    --ink:#e6e8ee; --muted:#98a0b3; --line:#2c3140;
+    --accent:#8fa4ff; --accent-ink:#101320; --accent-soft:#232941;
+    --urgent:#e0906f; --urgent-soft:#33231d;
+    --done:#7fb08c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12141a; --surface:#191c24; --surface-2:#222633;
+  --ink:#e6e8ee; --muted:#98a0b3; --line:#2c3140;
+  --accent:#8fa4ff; --accent-ink:#101320; --accent-soft:#232941;
+  --urgent:#e0906f; --urgent-soft:#33231d;
+  --done:#7fb08c;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);
+  line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:44rem;margin:0 auto;padding:2.25rem 1.15rem 4rem;
+  display:flex;flex-direction:column;gap:2.25rem}
+
+header{display:flex;flex-direction:column;gap:.85rem}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.85rem,6vw,2.6rem);
+  line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.standfirst{margin:0;color:var(--muted);font-size:1rem;max-width:34rem}
+
+.legs{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);
+  border-radius:.4rem;overflow:hidden;margin:0}
+.leg{background:var(--surface);padding:.7rem .8rem;display:flex;flex-direction:column;gap:.15rem}
+.leg dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+.leg dd{margin:0;font-size:.9rem;font-weight:500;font-variant-numeric:tabular-nums}
+
+.tier{display:flex;flex-direction:column;gap:.15rem}
+.tier-head{display:flex;flex-direction:column;gap:.3rem;padding-bottom:.7rem;
+  border-bottom:2px solid var(--ink);margin-bottom:.85rem}
+.tier-when{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent)}
+.tier-1 .tier-when{color:var(--urgent)}
+.tier-head h2{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
+.tier-note{margin:0;font-size:.86rem;color:var(--muted);max-width:34rem}
+
+ul.rows{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+li.row{display:grid;grid-template-columns:auto 1fr;gap:.1rem .75rem;
+  padding:.95rem .15rem;border-bottom:1px solid var(--line);align-items:start}
+li.row:last-child{border-bottom:none}
+.tick{grid-row:1/span 2;appearance:none;-webkit-appearance:none;margin:.18rem 0 0;
+  width:1.25rem;height:1.25rem;border:1.5px solid var(--muted);border-radius:.25rem;
+  background:var(--surface);cursor:pointer;flex:none;position:relative}
+.tick:checked{background:var(--done);border-color:var(--done)}
+.tick:checked::after{content:"";position:absolute;left:.4rem;top:.16rem;
+  width:.3rem;height:.6rem;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(43deg)}
+.tick:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.name{font-weight:600;font-size:1.02rem;display:block}
+.why{margin:.15rem 0 0;font-size:.88rem;color:var(--muted);max-width:34rem}
+.why b{color:var(--ink);font-weight:500}
+.why + .why{margin-top:.5rem}
+
+ol.steps{list-style:none;margin:0;padding:0;counter-reset:step;
+  display:flex;flex-direction:column}
+ol.steps li{counter-increment:step;display:grid;grid-template-columns:auto 1fr;
+  gap:.1rem .75rem;padding:.95rem .15rem;border-bottom:1px solid var(--line)}
+ol.steps li:last-child{border-bottom:none}
+ol.steps li::before{content:counter(step);grid-row:1/span 2;
+  font-family:var(--mono);font-size:.78rem;font-weight:500;
+  width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent-soft);
+  color:var(--accent);display:flex;align-items:center;justify-content:center;margin-top:.1rem}
+.mins{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+dl.ways{margin:0;display:flex;flex-direction:column;gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:.4rem;overflow:hidden}
+.way{background:var(--surface);padding:1rem 1.05rem;display:flex;flex-direction:column;gap:.35rem}
+.way dt{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem}
+.way-name{font-family:var(--display);font-weight:700;font-size:1.02rem}
+.way-for{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent-ink);background:var(--accent);
+  padding:.15rem .4rem;border-radius:.2rem}
+.way dd{margin:0;font-size:.88rem;color:var(--muted)}
+.way dd b{color:var(--ink);font-weight:500}
+.catch{font-size:.82rem;color:var(--urgent)}
+
+.callout{background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--urgent);border-radius:.3rem;padding:1rem 1.1rem;
+  display:flex;flex-direction:column;gap:.5rem}
+.callout h3{font-family:var(--display);font-size:1rem;margin:0}
+.callout ul{margin:0;padding-left:1.1rem;font-size:.88rem;color:var(--muted);
+  display:flex;flex-direction:column;gap:.4rem}
+.callout li b{color:var(--ink);font-weight:500}
+.callout.mac{border-left-color:var(--accent)}
+.callout.mac p{margin:0;font-size:.88rem;color:var(--muted)}
+code{font-family:var(--mono);font-size:.85em;background:var(--surface-2);
+  padding:.1rem .3rem;border-radius:.2rem}
+
+footer{border-top:1px solid var(--line);padding-top:1rem;font-size:.8rem;color:var(--muted)}
+footer p{margin:0 0 .4rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">Circle Japan · Diamond Princess · 2–16 Sep 2026</p>
+  <h1>Japan Photo Kit</h1>
+  <p class="standfirst">How to end the trip with eighty photos worth looking at instead of three thousand nobody opens. Almost all of the work is two minutes a night, in bed, while you still remember where you were.</p>
+  <dl class="legs">
+    <div class="leg"><dt>Board Yokohama</dt><dd>5 Sep</dd></div>
+    <div class="leg"><dt>Days aboard</dt><dd>10</dd></div>
+    <div class="leg"><dt>Home</dt><dd>16 Sep</dd></div>
+    <div class="leg"><dt>Nightly cost</dt><dd>2 min</dd></div>
+  </dl>
+</header>
+
+<section class="tier tier-1">
+  <div class="tier-head">
+    <span class="tier-when">Tonight, on hotel or ship WiFi</span>
+    <h2>Four things to set up before the shooting starts</h2>
+    <p class="tier-note">All on the iPhone, all one-offs. The third one is the whole system — everything later hangs off that album existing.</p>
+  </div>
+  <ul class="rows">
+    <li class="row">
+      <input class="tick" type="checkbox" id="s1" aria-label="iCloud storage checked">
+      <span class="name">Check iCloud has room for the trip</span>
+      <p class="why"><b>Settings → your name → iCloud → Manage Storage.</b> Sixteen days of a couple's photos is realistically <b>10–25 GB</b> — a still is 2–4 MB, but 4K video runs 200–400 MB <em>per minute</em> and that's what fills a plan. If you're near the top of 50 GB, move to 200 GB now. A phone that stops backing up mid-cruise is how a trip gets lost.</p>
+    </li>
+    <li class="row">
+      <input class="tick" type="checkbox" id="s2" aria-label="iCloud Photos confirmed on">
+      <span class="name">Confirm iCloud Photos is on — this is your backup</span>
+      <p class="why"><b>Settings → Photos → Sync this iPhone.</b> With it on, every shot is off the phone within minutes of finding WiFi, so a phone left in a taxi in Kagoshima costs you a phone and not the holiday. Also set <b>Optimise iPhone Storage</b> so the phone can't fill up.</p>
+      <p class="why">While you're there, turn <b>Cellular Data off</b> for Photos. On a roaming eSIM you want uploads happening on hotel and ship WiFi, not on data you're paying for by the megabyte.</p>
+    </li>
+    <li class="row">
+      <input class="tick" type="checkbox" id="s3" aria-label="Japan 2026 album created">
+      <span class="name">Make one empty album called <code>Japan 2026</code></span>
+      <p class="why"><b>Albums tab → + → New Album.</b> Leave it empty. It is the bucket the nightly habit pours into, and the thing you'll hand to Kim, Charles and Shirley and your family later. One album for the whole trip — don't make one per port, you'll stop doing it by Busan.</p>
+    </li>
+    <li class="row">
+      <input class="tick" type="checkbox" id="s4" aria-label="Sharing method decided">
+      <span class="name">Decide who sees what, once</span>
+      <p class="why">Four different mechanisms, and picking the wrong one is the usual mess. The next section lays them out — the short version is <b>Shared Library for Kim, Shared Album for everyone else.</b></p>
+    </li>
+  </ul>
+</section>
+
+<section class="tier">
+  <div class="tier-head">
+    <span class="tier-when">Every night, before you turn the light off</span>
+    <h2>The two-minute habit that does the whole job</h2>
+    <p class="tier-note">This is the entire cull, spread across sixteen small painless pieces instead of one four-hour job in October that you will not do. Order matters — heart before you delete.</p>
+  </div>
+  <ol class="steps">
+    <li>
+      <span class="name">Scroll back through today <span class="mins">30 sec</span></span>
+      <p class="why">Open Photos and scroll to this morning. Don't judge anything yet, just look — you're reminding yourself what the day actually contained.</p>
+    </li>
+    <li>
+      <span class="name">Heart the keepers <span class="mins">60 sec</span></span>
+      <p class="why">Tap the <b>♡</b> on the ten or fifteen shots you'd show someone. That's it — that's the cull. In three weeks you won't be sorting three thousand photos, you'll be sorting the four hundred you hearted, and past-you already did the hard part while you still remembered which of the five torii shots was the one where the light was right.</p>
+    </li>
+    <li>
+      <span class="name">Bin the obvious rubbish <span class="mins">20 sec</span></span>
+      <p class="why">Screenshots, blurry ones, the accidental shot of your shoe, the four identical menu photos. Delete them <em>now</em>, while it's obvious. They go to Recently Deleted and sit there for 30 days, so nothing is final.</p>
+    </li>
+    <li>
+      <span class="name">Add the day's keepers to <code>Japan 2026</code> <span class="mins">20 sec</span></span>
+      <p class="why">Tap <b>Select</b>, then drag your finger across today's keepers to grab them in one go — you don't have to tap each one. Then <b>Add to Album → Japan 2026</b>.</p>
+    </li>
+    <li>
+      <span class="name">Caption the two you'll forget <span class="mins">10 sec</span></span>
+      <p class="why">Swipe up on a photo and type into <b>Add a Caption</b>. "Sengan-en, Kagoshima" takes four seconds now and is unrecoverable in 2031. Captions are searchable, so this is also how you find things later. Two a day is plenty.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="tier">
+  <div class="tier-head">
+    <span class="tier-when">Sharing</span>
+    <h2>Four mechanisms, and the one job each is good at</h2>
+    <p class="tier-note">Apple gives these near-identical names and they behave completely differently. Read the catches — the first two are the ones that surprise people.</p>
+  </div>
+  <dl class="ways">
+    <div class="way">
+      <dt><span class="way-name">iCloud Shared Photo Library</span><span class="way-for">For Kim</span></dt>
+      <dd>A <b>second library</b> that you and Kim both contribute to and both fully own — her shots and yours land in one pool, on both phones, at full quality. Set it up once (<b>Settings → Photos → Shared Library</b>) and you can have it add automatically when you're photographing together, so neither of you has to send the other anything all trip.</dd>
+      <dd class="catch">Catch: it's a shared library, not a copy. If Kim deletes a photo from it, it's gone for you too. Up to 5 people, so don't add the other couple here.</dd>
+    </div>
+    <div class="way">
+      <dt><span class="way-name">Shared Album</span><span class="way-for">For everyone else</span></dt>
+      <dd>The one to use for Charles and Shirley and for family at home. It produces a <b>public web link</b> that works on Android, Windows, anything — no Apple account needed to look. People can like, comment, and add their own shots of the same day, which is how you get their photos of you.</dd>
+      <dd class="catch">Catch: photos are downsized to about 2048px on the long edge and video is compressed. Perfect for looking at, useless for printing — so this is a sharing tool, never your backup.</dd>
+    </div>
+    <div class="way">
+      <dt><span class="way-name">Copy iCloud Link</span><span class="way-for">One-off sends</span></dt>
+      <dd>Select some photos, <b>Share → Copy iCloud Link</b>, paste into any message. Sends them at <b>full original quality</b>, which the shared album won't. This is the right tool for "here are the forty best, at proper resolution" once you're home.</dd>
+      <dd class="catch">Catch: the link expires after about 30 days, so tell people to save what they want.</dd>
+    </div>
+    <div class="way">
+      <dt><span class="way-name">AirDrop</span><span class="way-for">While you're standing there</span></dt>
+      <dd>Full quality, instant, no internet or data required — which matters a lot on a ship. Use it to pull the other couple's photos of the two of you <b>on the day, at dinner</b>, rather than chasing them by email in November when they've stopped caring.</dd>
+      <dd class="catch">Catch: only works between Apple devices, in the same room.</dd>
+    </div>
+  </dl>
+</section>
+
+<section class="tier">
+  <div class="tier-head">
+    <span class="tier-when">Back in Perth, on the Mac</span>
+    <h2>Twenty minutes to the album people actually watch</h2>
+    <p class="tier-note">All of this is easier on the Mac than the phone. If you did the nightly habit, steps 1 and 2 take a couple of minutes.</p>
+  </div>
+  <ol class="steps">
+    <li>
+      <span class="name">Catch anything that missed the album</span>
+      <p class="why"><b>File → New Smart Album</b>, set <em>Date Captured is in the range</em> 2 Sep 2026 to 16 Sep 2026. That is the entire trip, from every device signed in, with no dragging — a safety net under the nightly habit.</p>
+    </li>
+    <li>
+      <span class="name">Merge the duplicates</span>
+      <p class="why">In the sidebar under <b>Utilities → Duplicates</b>, Photos has already found the exact and near-identical pairs — including the ones that arrive twice via AirDrop and shared albums. <b>Merge</b> keeps the best version and combines the metadata. It's safe, and it's the single biggest count reduction you'll get.</p>
+    </li>
+    <li>
+      <span class="name">Cut the favourites down to a best-of</span>
+      <p class="why">Filter <code>Japan 2026</code> to <b>Favourites</b> and make a second album, <code>Japan 2026 — Best Of</code>. Aim for <b>about five per day, so eighty all up.</b> That's the ruthless bit and it's the bit that matters: eighty photos get watched to the end, four hundred get abandoned at Kobe.</p>
+    </li>
+    <li>
+      <span class="name">Look at it on the map</span>
+      <p class="why">The <b>Places</b> view draws the whole trip on a map of Japan and Korea from the GPS in each shot. It's the best way to remember which headland was which — and it's a good check that a day isn't missing.</p>
+    </li>
+    <li>
+      <span class="name">Let Photos make the movie, then fix it</span>
+      <p class="why">Photos will offer a <b>Memory</b> for the trip with music. Don't accept its selection — open it, and swap its picks for your best-of. A four-minute version is the thing you'll actually put on the TV when people come over.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="callout">
+  <h3>Five things that bite people</h3>
+  <ul>
+    <li><b>Deleting from a shared library deletes it for everyone.</b> If you're culling hard, do it in your own library, not the one you share with Kim.</li>
+    <li><b>Recently Deleted holds everything for 30 days.</b> Nothing you bin on the trip is final, so delete freely — but it also means the space isn't freed for a month.</li>
+    <li><b>A shared album is not a backup.</b> Downsized copies. The backup is iCloud Photos, quietly, in the background.</li>
+    <li><b>Ship WiFi will choke on video.</b> Big uploads want a hotel or a café on a port day. Let the phone hold them until then.</li>
+    <li><b>Menu names move between iOS versions.</b> Apple reshuffles the Photos app most years — hunt for the feature by name (Favourites, Duplicates, Shared Album) rather than following an exact tap path.</li>
+  </ul>
+</section>
+
+<section class="callout mac">
+  <h3>If it gets away from you</h3>
+  <p>If the nightly habit doesn't survive the first sea day — it happens — nothing is lost, it just moves the work to the Mac in September. Say the word when you're home and I'll do the sorting, de-duplicating and best-of pass with you on the laptop.</p>
+</section>
+
+<footer>
+  <p>Written 5 Sep 2026, the morning you board at Yokohama. Sits alongside the Japan Trip App Kit and the maps bookmarks.</p>
+  <p>Ticks are saved in this browser, so the iPhone and the iPad each keep their own.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  var boxes = document.querySelectorAll('.tick');
+  var KEY = 'japan-photo-kit';
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { saved = {}; }
+  boxes.forEach(function(box){
+    if (saved[box.id]) { box.checked = true; }
+    box.addEventListener('change', function(){
+      saved[box.id] = box.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
